@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI Design Talk Coach</title>
+<style>
+:root{
+  --bg:#f5f6fa; --card:#fff; --text:#1d2433; --muted:#6b7385; --line:#e2e5ee;
+  --brand:#3b5bdb; --brand-2:#e7ecff; --ok:#1f9d55; --ok-bg:#def7e8; --bad:#d6336c; --bad-bg:#ffe3ec; --warn:#b7791f; --warn-bg:#fff4d6;
+  --shadow:0 2px 12px rgba(20,30,60,.08);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#12151d; --card:#1b2030; --text:#e8ebf4; --muted:#98a0b5; --line:#2b3248; --brand:#7b93ff; --brand-2:#242c4d;
+    --ok:#4cd68a; --ok-bg:#16382a; --bad:#ff7aa5; --bad-bg:#44212f; --warn:#f1c56b; --warn-bg:#3f3517; --shadow:0 2px 12px rgba(0,0,0,.4);}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+header h1{font-size:1.1rem;margin:0}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:var(--brand-2);color:var(--brand);border-radius:99px;padding:3px 12px;font-size:.85rem;font-weight:600}
+.voice{display:flex;gap:10px;align-items:center;font-size:.85rem;color:var(--muted)}
+.voice select{max-width:180px}
+nav{display:flex;gap:4px;padding:8px 12px;overflow-x:auto;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav button{border:0;background:transparent;color:var(--muted);padding:9px 14px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+nav button.active{background:var(--brand);color:#fff}
+main{max-width:860px;margin:0 auto;padding:16px}
+section{display:none}
+section.active{display:block}
+h2{font-size:1.1rem;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+button,select,input,textarea{font:inherit;color:var(--text)}
+select,input,textarea{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+textarea{width:100%;min-height:300px;resize:vertical;line-height:1.65}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 16px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.rec{background:var(--bad);border-color:var(--bad);color:#fff;animation:pulse 1s infinite}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+@keyframes pulse{50%{opacity:.65}}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row.center{justify-content:center}
+.muted{color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:4px 14px;cursor:pointer;font-size:.9rem}
+.chip.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.flash{text-align:center;min-height:260px;display:flex;flex-direction:column;justify-content:center;gap:10px;cursor:pointer;user-select:none}
+.flash .en{font-size:2.3rem;font-weight:800}
+.flash .snd{font-size:1rem;color:var(--muted)}
+.flash .def{font-size:1.35rem;color:var(--brand);font-weight:700}
+.flash .ex{font-size:1.05rem;font-style:italic;color:var(--muted)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:6px 0 14px}
+.bar>i{display:block;height:100%;background:var(--brand);width:0;transition:width .3s}
+.bar.over>i{background:var(--bad)}
+.sentence{font-size:1.5rem;line-height:1.7;font-weight:600}
+.sentence .w{padding:1px 3px;border-radius:5px}
+.sentence .w.ok{background:var(--ok-bg);color:var(--ok)}
+.sentence .w.miss{background:var(--bad-bg);color:var(--bad);text-decoration:underline wavy}
+.score{font-size:2rem;font-weight:800}
+.box{border-radius:12px;padding:10px 14px;margin-top:10px}
+.box.ok{background:var(--ok-bg);color:var(--ok)}
+.box.bad{background:var(--bad-bg);color:var(--bad)}
+.box.warn{background:var(--warn-bg);color:var(--warn)}
+.box.info{background:var(--brand-2);color:var(--brand)}
+.opt{display:block;width:100%;text-align:left;margin-bottom:8px;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:12px 16px;cursor:pointer}
+.opt:hover{border-color:var(--brand)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.prompter{font-size:1.6rem;line-height:1.9;max-height:50vh;overflow:auto;padding:6px}
+.prompter .w{padding:1px 2px;border-radius:5px;color:var(--muted)}
+.prompter .w.done{color:var(--ok)}
+.prompter .w.cur{background:var(--brand);color:#fff}
+table{width:100%;border-collapse:collapse}
+td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.95rem}
+.dots{letter-spacing:2px;color:var(--brand);white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:620px){.grid2,.grid3{grid-template-columns:1fr 1fr}.flash .en{font-size:1.9rem}.sentence{font-size:1.25rem}.prompter{font-size:1.3rem}}
+ul.clean{padding-left:20px;margin:6px 0}
+ul.clean li{margin-bottom:5px}
+.kw{display:inline-block;margin:2px;padding:1px 9px;border-radius:99px;font-size:.9rem}
+.kw.ok{background:var(--ok-bg);color:var(--ok)}
+.kw.miss{background:var(--bad-bg);color:var(--bad)}
+.part{border-left:4px solid var(--brand);padding-left:12px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎤 UI Design Talk Coach</h1>
+  <div class="stats">
+    <span class="pill" id="stToday">Today: 0</span>
+    <span class="pill" id="stStreak">Streak: 0 days</span>
+    <span class="pill" id="stLearned">Learned: 0</span>
+  </div>
+  <div class="voice">
+    <label>Voice <select id="voiceSel"></select></label>
+    <label>Speed <input type="range" id="rate" min="0.5" max="1.2" step="0.05" value="0.9"></label>
+  </div>
+</header>
+<nav id="nav">
+  <button data-tab="home" class="active">🏠 Home</button>
+  <button data-tab="script">📝 My Script</button>
+  <button data-tab="speak">🗣️ Speaking Drill</button>
+  <button data-tab="cards">📚 Vocabulary</button>
+  <button data-tab="qa">❓ Q&amp;A</button>
+  <button data-tab="quiz">🎯 Quiz</button>
+  <button data-tab="words">📖 Word List</button>
+</nav>
+<main>
+  <div id="srWarn" class="box warn" style="display:none;margin-bottom:12px">
+    Your browser does not support speech recognition. Please use <b>Chrome</b> or <b>Edge</b> to check your speaking. Listening and flashcards still work.
+  </div>
+
+  <!-- HOME -->
+  <section id="tab-home" class="active">
+    <div class="card">
+      <h2>Our presentation</h2>
+      <div><b>Topic:</b> User Interface Design Principles for Mobile Apps</div>
+      <div class="muted">3 speakers × 5 minutes = 15 minutes. At a calm speed (about 120 words per minute), 5 minutes is about 550–650 words.</div>
+      <div class="grid3" style="margin-top:12px">
+        <input class="nm" data-i="0" placeholder="Speaker 1 name">
+        <input class="nm" data-i="1" placeholder="Speaker 2 name">
+        <input class="nm" data-i="2" placeholder="Speaker 3 name">
+      </div>
+      <div class="row" style="margin-top:12px">
+        <label>I am speaker <select id="meSel"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+        <span class="muted">Type your team's names first. Then the scripts use them.</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Who says what</h2>
+      <table id="partsTable"></table>
+    </div>
+    <div class="card">
+      <h2>7-day study plan</h2>
+      <ul class="clean">
+        <li><b>Day 1:</b> Listen to your script two times. Read it aloud once. Learn 10 words.</li>
+        <li><b>Day 2:</b> Vocabulary cards and a quiz. In <i>Speaking Drill</i>, get 80%+ on every sentence of your part.</li>
+        <li><b>Day 3:</b> Full rehearsal in <i>Full text</i> mode. Check your time and speed.</li>
+        <li><b>Day 4:</b> Full rehearsal in <i>First letters</i> mode. Practice 3 Q&amp;A questions.</li>
+        <li><b>Day 5:</b> Team rehearsal: practice the handovers between speakers. Use a real timer.</li>
+        <li><b>Day 6:</b> Speak without the script. Do all Q&amp;A questions.</li>
+        <li><b>Day 7:</b> Light review only. Sleep well. You are ready!</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Team checklist</h2>
+      <ul class="clean">
+        <li>Each person speaks for 4:30–5:30. Nobody is much longer than the others.</li>
+        <li>Each speaker ends with a clear handover: "Now I will give the floor to …"</li>
+        <li>Do not repeat the same example. Use the examples from the scripts or find your own.</li>
+        <li>Agree on who answers which Q&amp;A questions.</li>
+        <li>Slides: few words, big pictures. Show real app screenshots.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SCRIPT -->
+  <section id="tab-script">
+    <div class="chips" id="scParts"></div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <b id="scTitle"></b>
+        <span class="muted" id="scInfo"></span>
+      </div>
+      <div class="bar" id="scBar"><i></i></div>
+      <textarea id="scText"></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="scListen">🔊 Listen</button>
+        <button class="btn" id="scStop">⏹ Stop</button>
+        <button class="btn primary" id="scDrill">🗣️ Practice sentence by sentence</button>
+        <button class="btn primary" id="scRun">🎬 Full rehearsal</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="scFill">Fill in team names</button>
+        <button class="btn" id="scReset">Reset to original</button>
+      </div>
+      <div id="scWarn"></div>
+    </div>
+    <div class="card">
+      <h2>Key points of this part</h2>
+      <div class="muted" style="margin-bottom:6px">Do not memorize every word. Learn these points in order.</div>
+      <ul class="clean" id="scKeys"></ul>
+    </div>
+  </section>
+
+  <!-- REHEARSAL -->
+  <section id="tab-run">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <b id="runTitle">🎬 Full rehearsal</b>
+        <span class="pill" id="runTime">00:00 / 05:00</span>
+      </div>
+      <div class="bar" id="runBar"><i></i></div>
+      <div class="row" style="margin-bottom:8px">
+        <label>Mode
+          <select id="runMode">
+            <option value="full">Full text (reading)</option>
+            <option value="hints">First letters (memory)</option>
+          </select>
+        </label>
+      </div>
+      <div class="prompter" id="runText"></div>
+      <div class="muted" id="runHeard" style="min-height:24px;margin-top:8px"></div>
+      <div class="row">
+        <button class="btn primary" id="runStart">🎙️ Start</button>
+        <button class="btn" id="runBack">← Back to script</button>
+      </div>
+      <div id="runResult"></div>
+    </div>
+  </section>
+
+  <!-- SPEAKING DRILL -->
+  <section id="tab-speak">
+    <div class="chips" id="phraseCats"></div>
+    <div class="card">
+      <div class="muted" id="spIdx"></div>
+      <div class="sentence" id="spText"></div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn" id="spHear">🔊 Listen</button>
+        <button class="btn" id="spSlow">🐢 Listen slowly</button>
+        <button class="btn primary" id="spRec">🎙️ My turn</button>
+      </div>
+      <div id="spResult"></div>
+      <div class="row center" style="margin-top:16px">
+        <button class="btn" id="spPrev">← Previous</button>
+        <button class="btn" id="spNext">Next →</button>
+      </div>
+    </div>
+    <div class="box info">Method: <b>listen</b> first, then <b>repeat</b> with the same rhythm. When you reach 80% or more, move to the next sentence.</div>
+  </section>
+
+  <!-- VOCAB CARDS -->
+  <section id="tab-cards">
+    <div class="chips" id="cardCats"></div>
+    <div class="row" style="margin-bottom:8px">
+      <span class="muted">New words per session:</span>
+      <select id="newLimit"><option>5</option><option selected>10</option><option>20</option></select>
+      <span class="muted" id="cardCount"></span>
+    </div>
+    <div class="bar"><i id="cardBar"></i></div>
+    <div id="cardArea"></div>
+  </section>
+
+  <!-- Q&A -->
+  <section id="tab-qa">
+    <div class="card">
+      <div class="muted" id="qaIdx"></div>
+      <div class="sentence" id="qaQ"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="qaHear">🔊 Hear question</button>
+        <button class="btn primary" id="qaRec">🎙️ Answer</button>
+        <button class="btn" id="qaModel">💡 Show model answer</button>
+      </div>
+      <div id="qaOut"></div>
+      <div class="row center" style="margin-top:16px">
+        <button class="btn" id="qaPrev">← Previous</button>
+        <button class="btn" id="qaNext">Next →</button>
+        <button class="btn" id="qaRand">🎲 Random</button>
+      </div>
+    </div>
+    <div class="box info">Your answer does not need to be the same as the model answer. Include the <b>key ideas</b>, and keep it short: 2–4 sentences. Press <b>Answer</b>, speak, then press <b>Stop</b>.</div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="tab-quiz">
+    <div class="card">
+      <div id="quizSetup">
+        <b>Choose a quiz</b>
+        <div class="row" style="margin:10px 0">
+          <select id="quizMode">
+            <option value="def-term">Definition → Word</option>
+            <option value="term-def">Word → Definition</option>
+            <option value="listen">Listen → Word</option>
+          </select>
+          <select id="quizCat"></select>
+          <button class="btn primary" id="quizGo">Start (10 questions)</button>
+        </div>
+      </div>
+      <div id="quizArea"></div>
+    </div>
+  </section>
+
+  <!-- WORD LIST -->
+  <section id="tab-words">
+    <div class="card">
+      <b>Add your own word</b>
+      <div class="grid2" style="margin-top:8px">
+        <input id="nwEn" placeholder="Word (e.g. wireframe)">
+        <input id="nwTr" placeholder="Simple English definition">
+      </div>
+      <input id="nwEx" placeholder="Example sentence (optional)" style="width:100%;margin-top:8px">
+      <div class="row" style="margin-top:8px"><button class="btn primary" id="nwAdd">+ Add</button><span class="muted" id="nwMsg"></span></div>
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <input id="wSearch" placeholder="Search..." style="flex:1;min-width:140px">
+      <select id="wCat"></select>
+      <button class="btn" id="resetProg">Reset progress</button>
+    </div>
+    <div class="card" style="padding:8px 12px"><table id="wTable"></table></div>
+  </section>
+</main>
+
+<script>
+/* ================= DATA ================= */
+const MY_CAT = 'My Words';
+const RAW = `
+## Core Concepts
+user interface (UI) | everything a user sees and touches on a screen | A good user interface is easy to understand. | YOO-zer IN-ter-fays
+user experience (UX) | the overall feeling a person has when using a product | Good UX makes people want to use the app again. | YOO-zer ik-SPEER-ee-ens
+clarity | the quality of being easy to understand | Clarity helps users avoid mistakes. | KLAIR-ih-tee
+simplicity | having only what is necessary | Simplicity makes a screen less stressful. | sim-PLIS-ih-tee
+visual hierarchy | the order of importance created by size, color and position | Visual hierarchy shows users what to read first. | VIZH-oo-ul HY-rar-kee
+element | one part of a screen, such as a button or an image | Remove every element that the user does not need. | EL-ih-ment
+purpose | the reason why something exists | Every button needs a clear purpose. | PER-pus
+familiar | known and easy to recognize | Use familiar icons so users do not get confused. | fa-MIL-yer
+intuitive | easy to understand and use without instructions | An intuitive app does not need a tutorial. | in-TOO-ih-tiv
+usability | how easy and comfortable a product is to use | We test usability with real users. | yoo-za-BIL-ih-tee
+principle | a basic rule or idea | Consistency is an important design principle. | PRIN-sih-pul
+Hick's Law | the idea that more choices make decisions slower | According to Hick's Law, fewer options help users decide faster. | HIKS law
+distracted | not giving full attention to something | Users are often distracted when they use their phones. | dis-TRAK-tid
+## Layout & Navigation
+layout | the way elements are arranged on a screen | A good layout puts the main action in a clear place. | LAY-owt
+thumb zone | the part of the screen that your thumb can reach easily | Put frequent actions in the thumb zone. | THUM zohn
+touch target | the area that reacts when you tap it | A touch target must be big enough for a finger.
+Fitts's Law | the idea that big targets that are close are faster to hit | Fitts's Law explains why big buttons are easier to tap. | FIT-siz law
+spacing | the empty distance between elements | Enough spacing stops users from tapping the wrong button.
+white space | empty areas that give content room to breathe | White space makes a screen feel clean.
+grid | an invisible set of lines used to align elements | Designers use a grid to keep everything aligned.
+align | to arrange things in a straight line | Align the icons to the same edge. | uh-LYN
+navigation | the way users move from one screen to another | Clear navigation helps users feel in control. | NAV-ih-GAY-shun
+tab bar | a row of main sections at the bottom of the screen | The tab bar shows three to five sections.
+drawer menu | a hidden menu that slides out from the side; also called a hamburger menu | The drawer menu saves space but hides the options.
+back button | a control that returns the user to the previous screen | The back button should always work as expected.
+flow | a series of steps that a user follows to complete a task | The checkout flow should be short and simple.
+reachable | easy to touch without effort | Make the main buttons reachable with one hand. | REE-cha-bul
+by accident | not on purpose | Users may delete a file by accident. | AK-sih-dent
+Jakob's Law | the idea that users expect your app to work like other apps | Jakob's Law says that familiar patterns are better. | YAH-kobs law
+## Visual Design
+typography | the style, size and arrangement of text | Good typography makes reading easier. | ty-POG-ruh-fee
+font | a style of letters | Use a simple font that is easy to read.
+body text | the main text on a screen | Body text should be at least sixteen points.
+readable | easy to read | Large, dark text is more readable. | REE-duh-bul
+contrast | the difference between two colors, such as text and background | Low contrast makes text hard to read. | KON-trast
+contrast ratio | a number that shows how different two colors are | WCAG asks for a contrast ratio of 4.5 to 1. | RAY-shee-oh
+color blindness | a condition in which a person cannot see some colors clearly | Do not use color alone, because of color blindness.
+dark mode | a display style with a dark background | Many people prefer dark mode at night.
+icon | a small picture that represents an action or an idea | A magnifying glass icon means search. | EYE-kon
+label | a short text that names something | Add a label when an icon is not clear. | LAY-bul
+consistent | always similar in style and behavior | A consistent app is easy to learn. | kon-SIS-tent
+consistency | the quality of being consistent | Consistency makes an app predictable. | kon-SIS-ten-see
+design system | a collection of rules, components and guidelines for design | Material Design is a famous design system.
+guidelines | official advice about how to do something | Follow the platform guidelines. | GYDE-lynz
+brand identity | the unique look and feeling of a company | Colors help to show brand identity.
+attractive | pleasant to look at | The app is attractive and easy to use. | uh-TRAK-tiv
+predictable | behaving in the way that people expect | Predictable apps are easy to trust. | pri-DIK-tuh-bul
+## Feedback & Accessibility
+feedback | information that shows the result of an action | The button gives instant feedback when you tap it. | FEED-bak
+loading indicator | a symbol that shows that something is loading | Show a loading indicator when the app is busy.
+skeleton screen | a grey outline of the content that appears while the page loads | A skeleton screen makes waiting feel shorter. | SKEL-ih-ton skreen
+progress bar | a bar that shows how much of a task is complete | A progress bar shows how much time is left.
+haptic feedback | a small vibration that you feel when you touch the screen | Haptic feedback confirms a tap. | HAP-tik FEED-bak
+error message | a text that tells the user that something went wrong | A good error message explains how to fix the problem.
+undo | to reverse the last action | Gmail lets you undo a sent email. | un-DOO
+gesture | a movement of the fingers on the screen, such as a swipe | Gestures are fast but invisible. | JES-cher
+swipe | to move your finger quickly across the screen | Swipe left to delete a message.
+screen reader | software that reads the screen aloud for blind users | VoiceOver and TalkBack are screen readers.
+accessibility | designing so that everyone can use a product | Accessibility helps people with and without disabilities. | ak-SES-ih-BIL-ih-tee
+disability | a condition that makes some activities more difficult | Around one in six people has a disability. | DIS-uh-BIL-ih-tee
+heuristic | a practical rule for solving problems | Nielsen created ten usability heuristics. | hyoo-RIS-tik
+user testing | watching real people use a product to find problems | User testing shows problems that designers cannot see.
+prototype | an early model of a product | We made a prototype and tested it. | PRO-toh-type
+iterate | to improve something again and again | Good teams iterate on their designs. | IT-er-ayt
+trustworthy | deserving trust | Clear feedback makes an app trustworthy. | TRUST-wer-thee
+recover | to return to a normal situation after a problem | Good design helps users recover from mistakes. | ri-KUV-er
+responsive | reacting quickly to what the user does | A responsive app feels fast. | ri-SPON-siv
+platform | the system an app runs on, such as iOS or Android | Each platform has its own guidelines. | PLAT-form
+## Presenting
+give the floor to | to let another person speak next | I will now give the floor to my teammate.
+hand over to | to pass the presentation to another speaker | I will hand over to Anna, who will talk about layout.
+overview | a short general description | Let me give you a short overview.
+emphasize | to show that something is especially important | I want to emphasize this point. | EM-fuh-size
+highlight | to bring special attention to something | I would like to highlight three principles.
+in other words | used to explain something again in a simpler way | In other words, less is more.
+for this reason | because of this | For this reason, we need large buttons.
+in addition | also; used to add another point | In addition, the app should work offline.
+however | but; used to show a different idea | The design is beautiful. However, it is hard to use. | how-EV-er
+therefore | as a result; so | Users are in a hurry. Therefore, the screen must be simple. | THAIR-for
+to sum up | to give the main points in a short way | To sum up, clarity comes first.
+`;
+const BUILTIN = [];
+(() => { let cat=''; RAW.trim().split('\n').forEach(l => {
+  if (l.startsWith('## ')) { cat = l.slice(3).trim(); return; }
+  const [en,def,ex,snd] = l.split('|').map(s => s.trim());
+  BUILTIN.push({id:'b'+BUILTIN.length, en, def, ex, snd:snd||'', cat});
+}); })();
+
+const TITLES = {
+  1:'Introduction & Core Principles',
+  2:'Layout, Navigation & Readable Text',
+  3:'Icons, Consistency, Feedback & Conclusion'
+};
+const KEYS = {
+  1:['Greeting and team introduction','Hook question: how often do you check your phone?','What is a user interface (UI)?','Why mobile UI is special: small screen, people in a hurry, many choices','Principle 1 – Clarity: where am I? what can I do? what happens next?','Principle 2 – Simplicity: less is more, Hick\'s Law','Principle 3 – Visual hierarchy: size, color, position','Handover to Speaker 2'],
+  2:['Thumb zone: bottom of the screen is easy to reach','Fitts\'s Law: big, close targets are easier to hit','Touch targets: 44 × 44 points (Apple), 48 × 48 dp (Google), space between buttons','Navigation patterns: tab bar, drawer (hamburger) menu, top bar with back button','Advice: maximum 5 tabs, highlight the current tab, back button must work; Jakob\'s Law','Typography: at least 16 points, simple font, maximum 2 fonts','Contrast: 4.5 to 1 for normal text, 3 to 1 for large text (WCAG); never use color alone','Handover to Speaker 3'],
+  3:['Icons: familiar, add labels, same style','Consistency and design systems (Material Design, Human Interface Guidelines)','Feedback: visibility of system status (Nielsen); haptic feedback','Speed: 0.1 s feels instant, 10 s loses attention; skeleton screen, progress bar','Error messages: plain language, explain, offer a solution; Undo','Accessibility: 1 in 6 people, screen readers, text size','User testing: even 5 users find most big problems; design is a cycle','Summary of the whole talk + final sentence + thank you']
+};
+const SCRIPTS = {
+1:`Good morning everyone, and thank you for coming. Our topic today is User Interface Design Principles for Mobile Apps. My name is [Name 1]. Together with [Name 2] and [Name 3], we will talk for about fifteen minutes. Each of us will speak for five minutes.
+
+Let me start with a simple question. How many times do you check your phone every day? For most people, the answer is more than fifty times. Every time we open an app, we meet its user interface, or UI. The user interface is everything you see and touch on the screen: the buttons, the text, the colors, the icons, and the menus.
+
+Why is UI design so important on mobile? There are three main reasons. First, the screen is small. We do not have much space, so every element must have a clear purpose. Second, people use their phones everywhere: on the bus, in a café, or while walking. They are often in a hurry and they are often distracted. Third, users have a lot of choice. If an app is confusing, they delete it in a few seconds and download another one.
+
+Here is our plan for today. In my part, I will explain the basic principles: clarity, simplicity, and visual hierarchy. [Name 2] will talk about layout, navigation, and readable text. Finally, [Name 3] will speak about icons, consistency, feedback, and accessibility, and then close our presentation.
+
+Now, let me begin with the first principle: clarity. A clear interface tells the user three things: where am I, what can I do here, and what will happen next? For example, a button with the text "Pay now" is much clearer than a button with only a small picture. Good designers use simple words and familiar icons. They do not make users guess.
+
+The second principle is simplicity. There is a famous idea in design: less is more. Every extra button or extra line of text makes the screen more difficult to understand. A simple screen has one main goal. Think about the camera app on your phone. The most important button, the shutter button, is big and in the center. Everything else is smaller. This is simplicity. A good rule is to ask, "Does the user really need this element on this screen?" If the answer is no, remove it.
+
+Simplicity also connects to a law called Hick's Law. It says that when people have more choices, they need more time to decide. So, we should show only the most important options first and move the others to a second screen or a menu.
+
+The third principle is visual hierarchy. Visual hierarchy means that the most important things look the most important. We can create hierarchy with size, color, and position. A large, bold title catches the eye first. A bright button attracts attention. Smaller grey text is for less important information. Look at a news app: the headline is big, the picture is large, and the date is small and light. In one second, you understand what is important.
+
+When these three principles work together, the app feels natural. The user does not need a manual or a tutorial. They just start using it.
+
+To sum up, clear, simple, and well-organized screens help users reach their goals quickly. Now I would like to give the floor to [Name 2], who will explain how layout and navigation make this possible. Thank you.`,
+
+2:`Thank you, [Name 1]. Hello everyone, I am [Name 2]. In my part, I will talk about layout, navigation, and readable text. These things decide how easily people can move through an app and understand what they see.
+
+Let's start with layout. When we design a mobile screen, the first question is: how do people hold their phone? Many people use their phone with one hand, and they use their thumb to touch the screen. Because of this, designers talk about the thumb zone. The thumb zone is the area of the screen that your thumb can reach easily. On a large phone, this is usually the bottom center of the screen. The top corners are the hardest places to reach.
+
+What does this mean for design? Put the most important and most frequent actions in the easy zone, near the bottom. Put rare or dangerous actions, such as "Delete account", in places that are harder to reach, so that people do not press them by accident. This idea is connected to Fitts's Law. It says that big targets that are close to your finger are faster and easier to hit.
+
+That brings me to touch targets. A touch target is the area that reacts when you tap. Your finger is much bigger than a mouse pointer, so touch targets must be large enough. Apple recommends a minimum size of forty-four by forty-four points. Google's Material Design recommends forty-eight by forty-eight density-independent pixels. We also need space between buttons. If two buttons are too close, users will tap the wrong one and feel frustrated.
+
+Now let's talk about navigation. Navigation is the way users move between screens. A good navigation system answers two questions: where am I, and how do I go somewhere else?
+
+There are three common patterns. The first is the bottom tab bar. You can see it in Instagram or YouTube. It shows three to five main sections, and it is always visible. It is easy to reach with your thumb, so it is the best choice for most apps. The second pattern is the drawer menu, also called the hamburger menu. It saves space, but people often forget it exists, because out of sight means out of mind. The third pattern is the top bar with a back button. It is useful when users go deeper into a flow, for example from a product list to a product page. My advice is simple: use five tabs at most, always highlight the current tab, and make sure that the back button works the way users expect. Remember Jakob's Law: users spend most of their time in other apps, so they expect your app to work in a similar way.
+
+My last topic is readable text. Let me begin with typography, which means the style and size of text. A good rule is to use at least sixteen points for body text. Use a simple, clean font, and try not to use more than two fonts in one app.
+
+Then there is contrast. Contrast is the difference between the text color and the background color. The Web Content Accessibility Guidelines, called WCAG, say that normal text needs a contrast ratio of at least four point five to one. Large text needs at least three to one. Also, do not use color alone to give information. Around eight percent of men have some form of color blindness, so an error should have an icon or a message as well as a red color.
+
+To summarize, a good layout puts important actions where thumbs can reach, good navigation shows users where they are, and readable text helps everyone. Now, [Name 3] will talk about icons, consistency, and feedback. Thank you.`,
+
+3:`Thank you, [Name 2]. Hi everyone, my name is [Name 3]. I will talk about icons, consistency, feedback, and accessibility. Then I will close our presentation.
+
+Let's begin with icons. Icons save space and help users understand things quickly, but only if they are familiar. A magnifying glass means search. A house means home. A gear means settings. If you invent a strange icon, users will be confused. When an icon is not completely clear, add a text label. Icons should also have the same style, with the same line thickness and the same corner shape.
+
+This idea brings me to consistency, which is one of the most important principles. Consistency means that similar things look and behave in a similar way. If a blue button means "continue" on one screen, it should not mean "cancel" on another screen. Consistency makes an app predictable, and predictable apps are easy to learn. Big companies create design systems to keep this consistency. A design system is a collection of rules, colors, components, and guidelines. Two famous examples are Google's Material Design and Apple's Human Interface Guidelines.
+
+Now, feedback. Imagine you press a button and nothing happens. You do not know if the app is working or broken, so you press again, and again. This is a bad experience. Good UI always tells the user what is happening. Jakob Nielsen calls this principle visibility of system status. Feedback can be visual, like a button that changes color when you tap it. It can be a sound, or a small vibration, which we call haptic feedback. Or it can be a message, such as "Your photo was uploaded."
+
+Speed is also part of feedback. If a response takes less than one tenth of a second, it feels instant. After ten seconds, users lose attention. So, if something takes time, show a loading indicator. Even better, use a skeleton screen, which shows a grey shape of the content while it loads. For longer tasks, show a progress bar.
+
+Mistakes will always happen, so a good app helps users recover. A bad message says, "Error 404." A good message says, "We could not find this page. Please check your connection and try again." Use plain language, explain the problem, and offer a solution. Also, let users undo their actions. For example, Gmail shows an Undo button after you send an email.
+
+Next, accessibility. Accessibility means designing for everyone, including people with visual, hearing, motor, or cognitive difficulties. Around one in six people in the world has some kind of disability. We should support screen readers, like VoiceOver and TalkBack, by adding clear labels to buttons and images. We should allow users to increase the text size. And, as we heard earlier, we need good contrast and large touch targets.
+
+Finally, testing. Designers are not the users. We know our app too well, so we cannot see its problems. That is why we must test with real people. Even five users can find most of the big problems. Then we improve the design and test again. Good design is never finished. It is a cycle.
+
+Now let me summarize our presentation. [Name 1] explained that clarity, simplicity, and hierarchy are the foundation. [Name 2] showed that layout, navigation, and readable text must fit the user's thumb and eyes. And in my part, we saw that familiar icons, consistency, good feedback, and accessibility make an app trustworthy.
+
+If I had to choose one sentence, it would be this: a great mobile interface is clear, simple, consistent, and kind to the user.
+
+Thank you very much for your attention. We would be happy to answer your questions.`
+};
+
+const PHRASES = {
+  'Handovers': [
+    'Now I would like to give the floor to my teammate.',
+    'Thank you for that clear introduction. Let me continue with layout and navigation.',
+    'I will now hand over to my colleague, who will talk about visual design.',
+    'Thank you, and over to you.',
+    'As my teammate explained earlier, clarity is the foundation of good design.',
+    'Let me add something to what my teammate said.',
+    'That connects to what we heard in the previous part.',
+    'My part ends here. Please welcome the next speaker.'
+  ],
+  'Signposting': [
+    'Let me start with the first principle: clarity.',
+    'Another key point is consistency.',
+    'Here is some practical advice.',
+    'This brings me to the next idea.',
+    'Let me give you an example.',
+    'In other words, less is more.',
+    'For this reason, we need large buttons.',
+    'To sum up, a good interface is clear and simple.',
+    'In conclusion, we should always design for the user.'
+  ],
+  'Hard words & numbers': [
+    'Apple recommends a minimum touch target of forty-four by forty-four points.',
+    'Text needs a contrast ratio of at least four point five to one.',
+    'Hierarchy, accessibility, typography, and consistency are key ideas.',
+    'The thumb zone is the area that your thumb can reach easily.',
+    'Jakob\'s Law says that users expect your app to work like other apps.',
+    'Hick\'s Law says that more choices need more time to decide.',
+    'Fitts\'s Law says that big, close targets are easier to hit.',
+    'A skeleton screen shows a grey shape while the content loads.',
+    'WCAG is short for Web Content Accessibility Guidelines.',
+    'Google\'s Material Design and Apple\'s Human Interface Guidelines are famous design systems.',
+    'Around one in six people in the world has a disability.',
+    'A response under one tenth of a second feels instant.'
+  ]
+};
+
+const QA = [
+  ['What is the most important UI principle for mobile apps?','In my opinion, it is clarity. If users do not understand the screen, other things like color or animation do not matter. A clear interface helps users reach their goal quickly.'],
+  ['What is the difference between UI and UX?','UI is how the app looks and what you touch, such as buttons and text. UX is the whole experience, and how easy and pleasant it feels to reach your goal. A beautiful UI can still have bad UX if it is confusing.'],
+  ['Why is a bottom tab bar better than a hamburger menu?','A tab bar is always visible and it is easy to reach with your thumb. A hamburger menu hides the options, so people often forget them. However, a drawer can be useful when an app has many sections.'],
+  ['Is dark mode important?','Yes, because many users like it at night and it can reduce eye strain. It can also save battery on some screens. But designers must check the contrast carefully.'],
+  ['How can designers make an app accessible?','They can use good contrast, large touch targets, and clear labels for screen readers. They should also allow users to increase the text size. Testing with people who have disabilities is very helpful.'],
+  ['How many users do you need for testing?','Even five users can show most of the big usability problems. It is better to test a few users many times than to test many users only once.'],
+  ['Should apps follow platform guidelines or create their own style?','I think they should follow the guidelines for basic things, because users already know them. Apps can still show their brand with colors, illustrations, and tone of voice.'],
+  ['What mistake do beginners make most often?','Many beginners put too much on one screen or use buttons that are too small. They also forget to give feedback after an action.'],
+  ['How does consistency help users?','It makes the app predictable. When things look and work in the same way, users learn faster and make fewer mistakes.'],
+  ['Can you give an example of a good mobile UI?','For me, the camera app on a phone is a good example. The shutter button is big and easy to reach, and everything else is simple and small. You understand it in one second.'],
+  ['What is the biggest challenge in mobile UI design?','The small screen is the biggest challenge. Designers must show only the important things, and they must make them easy to touch. At the same time, the app must still look good.'],
+  ['Could you repeat the last part, please?','Of course. I said that the thumb zone is the area of the screen that your thumb can reach easily. We should put the most important actions there.']
+];
+
+const TEMPLATE_WORDS_PER_MIN = 120, TARGET_SEC = 300;
+
+/* ================= HELPERS ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const LS = {
+  get(k,d){ try{ const v=localStorage.getItem('uidtc_'+k); return v==null?d:JSON.parse(v); }catch{ return d; } },
+  set(k,v){ try{ localStorage.setItem('uidtc_'+k, JSON.stringify(v)); }catch{} }
+};
+const fmtDate = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today = () => fmtDate(new Date());
+const addDays = n => { const d=new Date(); d.setDate(d.getDate()+n); return fmtDate(d); };
+const wc = t => (t.match(/\S+/g)||[]).length;
+const mmss = s => String(Math.floor(s/60)).padStart(2,'0')+':'+String(Math.floor(s%60)).padStart(2,'0');
+
+let custom = LS.get('custom', []);
+let progress = LS.get('progress', {});
+let activity = LS.get('activity', {});
+let names = LS.get('names', ['','','']);
+let me = Math.min(3, LS.get('me', 1));
+const INTERVALS = [0,1,2,4,8,16];
+const allWords = () => BUILTIN.concat(custom);
+const allCats = () => [...new Set(allWords().map(w=>w.cat))];
+function logActivity(){ activity[today()] = (activity[today()]||0)+1; LS.set('activity', activity); updateStats(); }
+
+function grade(id, ok){
+  const p = progress[id] || {box:0, due:today()};
+  if (ok){ p.box = Math.min(5, p.box+1); p.due = addDays(INTERVALS[p.box]); }
+  else { p.box = 1; p.due = today(); }
+  progress[id] = p; LS.set('progress', progress); logActivity();
+}
+function updateStats(){
+  $('#stToday').textContent = 'Today: '+(activity[today()]||0);
+  let streak=0, d=new Date(); if(!activity[fmtDate(d)]) d.setDate(d.getDate()-1);
+  while(activity[fmtDate(d)]){ streak++; d.setDate(d.getDate()-1); }
+  $('#stStreak').textContent = 'Streak: '+streak+(streak===1?' day':' days');
+  const learned = allWords().filter(w => (progress[w.id]?.box||0) >= 4).length;
+  $('#stLearned').textContent = 'Learned: '+learned+'/'+allWords().length;
+}
+
+/* ---- scripts ---- */
+const subst = t => t.replace(/\[Name ([1-3])\]/g, (m,i) => (names[i-1]||'').trim() || m);
+function getScript(p){ const s = LS.get('scripts', {}); return s[p] != null ? s[p] : subst(SCRIPTS[p]); }
+function setScript(p, t){ const s = LS.get('scripts', {}); s[p] = t; LS.set('scripts', s); }
+function splitSentences(t){ return t.split(/\n+/).flatMap(l => l.split(/(?<=[.!?])\s+/)).map(s=>s.trim()).filter(Boolean); }
+
+/* ================= SPEECH SYNTHESIS ================= */
+const settings = LS.get('settings', {rate:0.9, voice:''});
+let voices = [], speakingList = false;
+function loadVoices(){
+  voices = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith('en'));
+  const sel = $('#voiceSel');
+  sel.innerHTML = voices.map(v => `<option value="${esc(v.name)}">${esc(v.name.replace(/Microsoft |Google /,''))}</option>`).join('') || '<option>(default)</option>';
+  if (settings.voice && voices.some(v=>v.name===settings.voice)) sel.value = settings.voice;
+  else { const pref = voices.find(v=>/en-US/i.test(v.lang)) || voices[0]; if(pref) sel.value = pref.name; }
+  settings.voice = sel.value;
+}
+speechSynthesis.onvoiceschanged = loadVoices; loadVoices();
+$('#voiceSel').onchange = e => { settings.voice = e.target.value; LS.set('settings', settings); speak('Hello, this is my voice.'); };
+$('#rate').value = settings.rate;
+$('#rate').oninput = e => { settings.rate = +e.target.value; LS.set('settings', settings); };
+function speak(text, rate, onend){
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = rate ?? settings.rate;
+  const v = voices.find(v=>v.name===settings.voice); if (v) u.voice = v;
+  if (onend) u.onend = onend;
+  speechSynthesis.speak(u);
+}
+function speakList(list, i=0){
+  if (i >= list.length || !speakingList) return;
+  speak(list[i], null, () => speakList(list, i+1));
+}
+function stopSpeaking(){ speakingList=false; speechSynthesis.cancel(); }
+
+/* ================= SPEECH RECOGNITION ================= */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!SR) $('#srWarn').style.display = 'block';
+
+const ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function numToWords(n){
+  if (n<20) return ONES[n];
+  if (n<100) return TENS[Math.floor(n/10)] + (n%10?' '+ONES[n%10]:'');
+  if (n<1000) return ONES[Math.floor(n/100)]+' hundred'+(n%100?' '+numToWords(n%100):'');
+  return String(n);
+}
+const normWords = s => s.toLowerCase().replace(/[’`]/g,"'")
+  .replace(/(\d)\.(\d)/g,'$1 point $2')
+  .replace(/\d+/g, m => ' '+numToWords(+m)+' ')
+  .replace(/[^a-z' ]+/g,' ').split(/\s+/).filter(Boolean);
+function lcsMatch(t, s){
+  const n=t.length, m=s.length, dp=Array.from({length:n+1},()=>new Uint16Array(m+1));
+  for(let i=1;i<=n;i++) for(let j=1;j<=m;j++)
+    dp[i][j] = t[i-1]===s[j-1] ? dp[i-1][j-1]+1 : Math.max(dp[i-1][j], dp[i][j-1]);
+  const res = Array(n).fill(false); let i=n, j=m;
+  while(i>0 && j>0){
+    if (t[i-1]===s[j-1]){ res[i-1]=true; i--; j--; }
+    else if (dp[i-1][j] >= dp[i][j-1]) i--; else j--;
+  }
+  return res;
+}
+function listenOnce(onResult, onDone){
+  if (!SR){ alert('Speech recognition needs Chrome or Edge.'); onDone(); return; }
+  speechSynthesis.cancel();
+  const r = new SR(); r.lang='en-US'; r.interimResults=false; r.maxAlternatives=3;
+  let got=false;
+  r.onresult = e => { got=true; onResult([...e.results[0]].map(a=>a.transcript)); };
+  r.onerror = e => { got=true; onDone(e.error); };
+  r.onend = () => { if(!got) onDone('no-speech'); else onDone(); };
+  try { r.start(); } catch { onDone('busy'); }
+}
+const errMsg = c => ({'not-allowed':'Microphone permission was denied. Allow the microphone in the browser address bar.','no-speech':'I could not hear you. Please try again.','audio-capture':'No microphone found.','network':'Recognition needs an internet connection (Chrome processes speech online).'}[c] || 'Error: '+c);
+
+/* ================= TABS ================= */
+function showTab(name){
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('section').forEach(s => s.classList.toggle('active', s.id==='tab-'+name));
+  stopSpeaking();
+  if (name==='home') renderHome();
+  if (name==='script') renderScript();
+  if (name==='words') renderWords();
+}
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+function chipsHtml(items, cur){ return items.map(([v,l]) => `<button class="chip ${String(v)===String(cur)?'active':''}" data-v="${esc(v)}">${esc(l)}</button>`).join(''); }
+
+/* ================= HOME ================= */
+document.querySelectorAll('.nm').forEach(inp => {
+  inp.value = names[inp.dataset.i] || '';
+  inp.oninput = () => { names[inp.dataset.i] = inp.value; LS.set('names', names); renderHome(); };
+});
+$('#meSel').value = me;
+$('#meSel').onchange = e => { me = +e.target.value; LS.set('me', me); scPart = me; renderHome(); };
+function renderHome(){
+  $('#partsTable').innerHTML = '<tr><th>Part</th><th>Topic</th><th>Speaker</th><th>Words</th><th>Time</th></tr>' +
+    [1,2,3].map(p => {
+      const n = wc(getScript(p)), sec = n/TEMPLATE_WORDS_PER_MIN*60;
+      const good = sec>=270 && sec<=330;
+      return `<tr><td>${p}</td><td><b>${esc(TITLES[p])}</b></td><td>${esc(names[p-1]||'Speaker '+p)}${p===me?' ⭐':''}</td><td>${n}</td><td><span class="kw ${good?'ok':'miss'}">${mmss(sec)}</span></td></tr>`;
+    }).join('');
+}
+
+/* ================= SCRIPT TAB ================= */
+let scPart = me;
+const scText = $('#scText');
+function renderScript(){
+  $('#scParts').innerHTML = chipsHtml([1,2,3].map(p=>[p,`Part ${p}${p===me?' ⭐':''}`]), scPart);
+  $('#scParts').querySelectorAll('.chip').forEach(c => c.onclick = () => { scPart=+c.dataset.v; renderScript(); });
+  $('#scTitle').textContent = `Part ${scPart}: ${TITLES[scPart]} (${names[scPart-1]||'Speaker '+scPart})`;
+  scText.value = getScript(scPart);
+  $('#scKeys').innerHTML = KEYS[scPart].map(k=>`<li>${esc(k)}</li>`).join('');
+  scUpdate();
+}
+function scUpdate(){
+  const t = scText.value, n = wc(t), sec = n/TEMPLATE_WORDS_PER_MIN*60;
+  $('#scInfo').textContent = `${n} words · about ${mmss(sec)} min`;
+  const bar = $('#scBar'); bar.classList.toggle('over', sec>330);
+  bar.firstElementChild.style.width = Math.min(100, sec/TARGET_SEC*100)+'%';
+  const ph = (t.match(/\[[^\]]*\]/g)||[]).length;
+  let msg = '';
+  if (ph) msg += `<div class="box warn">There are ${ph} [placeholders] in this text, like [Name 2]. Type the names on the Home tab, then press “Fill in team names”.</div>`;
+  if (sec>330) msg += `<div class="box warn">This part is longer than 5:30. Shorten it a little.</div>`;
+  else if (sec<270) msg += `<div class="box warn">This part is shorter than 4:30. Add an example or speak a little slower.</div>`;
+  $('#scWarn').innerHTML = msg;
+}
+scText.oninput = () => { setScript(scPart, scText.value); scUpdate(); };
+$('#scFill').onclick = () => { scText.value = subst(scText.value); setScript(scPart, scText.value); scUpdate(); };
+$('#scReset').onclick = () => { if (confirm('Reset this part to the original script? Your changes will be lost.')) { const s=LS.get('scripts',{}); delete s[scPart]; LS.set('scripts',s); renderScript(); } };
+$('#scListen').onclick = () => { const s=splitSentences(scText.value); if(!s.length) return; speakingList=true; speakList(s); };
+$('#scStop').onclick = stopSpeaking;
+$('#scDrill').onclick = () => { if(!splitSentences(scText.value).length){ alert('The script is empty.'); return; } spSet='My script'; spI=0; renderPhraseCats(); renderPhrase(); showTab('speak'); };
+
+/* ================= REHEARSAL ================= */
+let runTokens=[], runPtr=0, runOn=false, runRec=null, runFinal=[], runStartT=0, runTimer=null;
+const maskWord = raw => raw.replace(/([A-Za-z])([A-Za-z']*)/g, (m,a,b)=> a+'_'.repeat(b.length));
+function renderRun(){
+  const hints = $('#runMode').value==='hints';
+  $('#runText').innerHTML = runTokens.map((t,i)=>{
+    const shown = (hints && i>=runPtr) ? maskWord(t.raw) : t.raw;
+    return `<span class="w ${i<runPtr?'done':''} ${i===runPtr&&runOn?'cur':''}">${esc(shown)}</span>`;
+  }).join(' ');
+  const cur = $('#runText .cur'); if (cur) cur.scrollIntoView({block:'center', behavior:'smooth'});
+}
+function advance(words){
+  let p = 0;
+  const skip = () => { while(p<runTokens.length && !runTokens[p].n) p++; };
+  skip();
+  for (const w of words){
+    for (let k=p; k<Math.min(runTokens.length, p+5); k++){
+      if (runTokens[k].n===w){ p=k+1; skip(); break; }
+    }
+  }
+  runPtr = p;
+}
+$('#runMode').onchange = renderRun;
+$('#scRun').onclick = () => {
+  const t = scText.value.trim(); if(!t){ alert('The script is empty.'); return; }
+  runTokens = t.split(/\s+/).map(raw => ({raw, n:(normWords(raw)[0]||'')}));
+  runPtr=0; runOn=false; $('#runResult').innerHTML=''; $('#runHeard').textContent=''; $('#runTime').textContent='00:00 / 05:00';
+  $('#runBar').classList.remove('over'); $('#runBar').firstElementChild.style.width='0';
+  $('#runTitle').textContent = `🎬 Rehearsal – Part ${scPart}`;
+  $('#runStart').textContent='🎙️ Start'; $('#runStart').classList.remove('rec');
+  renderRun(); showTab('run');
+};
+$('#runBack').onclick = () => { stopRun(true); showTab('script'); };
+function stopRun(silent){
+  runOn=false; clearInterval(runTimer);
+  if (runRec){ const r=runRec; runRec=null; try{r.stop();}catch{} }
+  $('#runStart').textContent='🎙️ Start'; $('#runStart').classList.remove('rec');
+  if (silent) return;
+  const sec = Math.max(1,(Date.now()-runStartT)/1000), spoken = runTokens.slice(0,runPtr).filter(t=>t.n).length;
+  const wpm = Math.round(spoken/sec*60), cov = Math.round(runPtr/runTokens.length*100);
+  const pace = wpm<90 ? 'A little slow. Try to sound more natural.' : wpm>150 ? 'Too fast! Slow down and add short pauses.' : 'Your speed is good.';
+  const tm = cov<80 ? 'Finish the whole script to measure your real time.' : sec<270 ? 'Your time is short. Add pauses or an example.' : sec>330 ? 'Your time is long. Cut one example or speak faster.' : 'Your time is perfect for a 5-minute talk! 🎉';
+  $('#runResult').innerHTML = `<div class="box ${cov>=80&&sec>=270&&sec<=330?'ok':'warn'}" style="margin-top:12px"><b>Time:</b> ${mmss(sec)} · <b>Speed:</b> ${wpm} words/min · <b>Script covered:</b> ${cov}%<br>${pace}<br>${tm}${cov<80?'<br>The highlighted word is where you stopped.':''}</div>`;
+  logActivity(); renderRun();
+}
+$('#runStart').onclick = () => {
+  if (runOn){ stopRun(); return; }
+  if (!SR){ alert('This feature needs Chrome or Edge.'); return; }
+  speechSynthesis.cancel(); runPtr=0; runFinal=[]; runOn=true; runStartT=Date.now(); $('#runResult').innerHTML='';
+  $('#runStart').textContent='⏹ Finish'; $('#runStart').classList.add('rec');
+  runTimer = setInterval(()=>{
+    const s=(Date.now()-runStartT)/1000; $('#runTime').textContent = mmss(s)+' / 05:00';
+    $('#runBar').firstElementChild.style.width = Math.min(100,s/TARGET_SEC*100)+'%'; $('#runBar').classList.toggle('over', s>TARGET_SEC+30);
+  },250);
+  const start = () => {
+    const r = new SR(); r.lang='en-US'; r.continuous=true; r.interimResults=true;
+    r.onresult = e => {
+      let interim='';
+      for (let i=e.resultIndex;i<e.results.length;i++){
+        const res=e.results[i];
+        if (res.isFinal) runFinal.push(...normWords(res[0].transcript)); else interim += ' '+res[0].transcript;
+      }
+      advance(runFinal.concat(normWords(interim)));
+      $('#runHeard').textContent = '🎧 ' + interim.trim();
+      renderRun();
+      if (runPtr>=runTokens.length) stopRun();
+    };
+    r.onerror = e => { if (e.error==='not-allowed'){ $('#runResult').innerHTML=`<div class="box warn">${errMsg(e.error)}</div>`; stopRun(true); } };
+    r.onend = () => { if (runOn && runRec===r){ try{ start(); }catch{} } };
+    runRec = r; try{ r.start(); }catch{}
+  };
+  start(); renderRun();
+};
+
+/* ================= SPEAKING DRILL ================= */
+let spSet='Handovers', spList=[], spI=0;
+function sourceList(name){
+  if (name==='My script') return splitSentences(scText.value || getScript(scPart));
+  return PHRASES[name] || [];
+}
+function renderPhraseCats(){
+  const names = [...Object.keys(PHRASES), 'My script'];
+  $('#phraseCats').innerHTML = chipsHtml(names.map(n=>[n,n==='My script'?`My script (Part ${scPart})`:n]), spSet);
+  $('#phraseCats').querySelectorAll('.chip').forEach(c => c.onclick = () => { spSet=c.dataset.v; spI=0; renderPhraseCats(); renderPhrase(); });
+}
+function renderPhrase(resultHtml=''){
+  spList = sourceList(spSet);
+  if (!spList.length){ $('#spIdx').textContent=''; $('#spText').innerHTML='<span class="muted" style="font-size:1rem">No sentences yet.</span>'; $('#spResult').innerHTML=''; return; }
+  spI = Math.max(0, Math.min(spI, spList.length-1));
+  $('#spIdx').textContent = `${spSet} · ${spI+1}/${spList.length}`;
+  $('#spText').textContent = spList[spI];
+  $('#spResult').innerHTML = resultHtml;
+}
+function scoreAndShow(target, alts){
+  const tokens = target.split(/\s+/), flat=[], owner=[];
+  tokens.forEach((tk,i) => normWords(tk).forEach(w => { flat.push(w); owner.push(i); }));
+  let best=null;
+  alts.forEach(a => { const m = lcsMatch(flat, normWords(a)); const c=m.filter(Boolean).length; if(!best||c>best.c) best={m,c,a}; });
+  const okTok = tokens.map(()=>true);
+  flat.forEach((_,i)=>{ if(!best.m[i]) okTok[owner[i]]=false; });
+  const html = tokens.map((tk,i)=>`<span class="w ${okTok[i]?'ok':'miss'}">${esc(tk)}</span>`).join(' ');
+  return {html, pct: flat.length ? Math.round(best.c/flat.length*100) : 0, heard:best.a};
+}
+$('#spHear').onclick = () => spList[spI] && speak(spList[spI]);
+$('#spSlow').onclick = () => spList[spI] && speak(spList[spI], 0.6);
+$('#spPrev').onclick = () => { spI--; renderPhrase(); };
+$('#spNext').onclick = () => { spI = spI+1>=spList.length ? 0 : spI+1; renderPhrase(); };
+$('#spRec').onclick = () => {
+  if (!spList[spI]) return;
+  const btn=$('#spRec'), target=spList[spI];
+  btn.classList.add('rec'); btn.textContent='🎙️ Listening... speak now';
+  let out='';
+  listenOnce(alts => {
+    const r = scoreAndShow(target, alts);
+    $('#spText').innerHTML = r.html;
+    const good = r.pct>=80;
+    out = `<div class="box ${good?'ok':r.pct>=50?'warn':'bad'}"><span class="score">${r.pct}%</span> ${good?'Great! Go to the next sentence.':r.pct>=50?'Not bad. Try the red words again, slowly.':'Listen first, then repeat slowly.'}<br><small>I heard: “${esc(r.heard)}”</small></div>`;
+    logActivity();
+  }, err => {
+    if (err) out = `<div class="box warn">${errMsg(err)}</div>`;
+    btn.classList.remove('rec'); btn.textContent='🎙️ My turn';
+    $('#spResult').innerHTML = out;
+  });
+};
+
+/* ================= VOCAB CARDS ================= */
+let cardCat='all', queue=[], cardTotal=0, flipped=false, cardMicMsg='';
+function buildQueue(){
+  const lim = +$('#newLimit').value, t = today();
+  const pool = allWords().filter(w => cardCat==='all' || w.cat===cardCat);
+  const due = shuffle(pool.filter(w => progress[w.id] && progress[w.id].due<=t));
+  const fresh = shuffle(pool.filter(w => !progress[w.id])).slice(0, lim);
+  queue = due.concat(fresh); cardTotal = queue.length; flipped=false; cardMicMsg='';
+}
+function renderCardCats(){
+  $('#cardCats').innerHTML = chipsHtml([['all','All'], ...allCats().map(c=>[c,c])], cardCat);
+  $('#cardCats').querySelectorAll('.chip').forEach(c => c.onclick = () => { cardCat=c.dataset.v; renderCardCats(); buildQueue(); renderCard(); });
+}
+function renderCard(){
+  const area = $('#cardArea'), done = cardTotal-queue.length;
+  $('#cardBar').style.width = (cardTotal? done/cardTotal*100 : 0)+'%';
+  $('#cardCount').textContent = queue.length ? `Left: ${queue.length}` : '';
+  if (!queue.length){
+    area.innerHTML = `<div class="card" style="text-align:center"><div style="font-size:2rem">🎉</div><b>That is all for now!</b><p class="muted">No more cards to review.</p><button class="btn primary" id="moreNew">Study 10 more new words</button></div>`;
+    $('#moreNew').onclick = () => { const pool=shuffle(allWords().filter(w=>(cardCat==='all'||w.cat===cardCat)&&!progress[w.id])).slice(0,10); queue=pool; cardTotal=pool.length; renderCard(); };
+    return;
+  }
+  const w = queue[0], p = progress[w.id];
+  area.innerHTML = `
+    <div class="card flash" id="flash">
+      <div class="muted">${esc(w.cat)} ${p?'· level '+p.box+'/5':'· new'}</div>
+      <div class="en">${esc(w.en)}</div>
+      ${w.snd?`<div class="snd">/ ${esc(w.snd)} /</div>`:''}
+      ${flipped ? `<div class="def">${esc(w.def)}</div>${w.ex?`<div class="ex">“${esc(w.ex)}”</div>`:''}` : `<div class="muted">(tap the card or press Space to see the meaning)</div>`}
+    </div>
+    <div class="row center" style="margin-bottom:10px">
+      <button class="btn" id="cSay">🔊 Word</button>
+      ${w.ex?'<button class="btn" id="cSayEx">🔊 Sentence</button>':''}
+      <button class="btn" id="cMic">🎙️ My turn</button>
+    </div>
+    <div id="cMsg">${cardMicMsg}</div>
+    ${flipped ? `<div class="row center" style="margin-top:12px"><button class="btn bad" id="cNo">I did not know (1)</button><button class="btn ok" id="cYes">I knew it (2)</button></div>` : `<div class="row center" style="margin-top:12px"><button class="btn primary" id="cFlip">Show meaning</button></div>`}`;
+  $('#flash').onclick = () => { flipped=true; renderCard(); };
+  $('#cSay').onclick = () => speak(w.en.replace(/\(.*?\)/g,''));
+  if (w.ex) $('#cSayEx').onclick = () => speak(w.ex);
+  $('#cMic').onclick = () => {
+    const btn=$('#cMic'); btn.classList.add('rec'); btn.textContent='🎙️ Listening...';
+    listenOnce(alts => {
+      const target = normWords(w.en.replace(/\(.*?\)/g,'')).join(' ');
+      const ok = alts.some(a => normWords(a).join(' ')===target);
+      cardMicMsg = ok ? `<div class="box ok">✅ Correct! I heard: “${esc(alts[0])}”</div>` : `<div class="box bad">I heard: “${esc(alts[0])}”. Listen and try again.</div>`;
+    }, err => { if(err) cardMicMsg = `<div class="box warn">${errMsg(err)}</div>`; if(queue[0]===w) renderCard(); });
+  };
+  if (flipped){ $('#cNo').onclick = () => answerCard(false); $('#cYes').onclick = () => answerCard(true); }
+  else $('#cFlip').onclick = () => { flipped=true; renderCard(); };
+}
+function answerCard(ok){
+  const w = queue.shift(); grade(w.id, ok);
+  if (!ok) queue.push(w);
+  flipped=false; cardMicMsg=''; renderCard(); updateStats();
+}
+document.addEventListener('keydown', e => {
+  if (!$('#tab-cards').classList.contains('active') || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) || !queue.length) return;
+  if (e.code==='Space'){ e.preventDefault(); flipped=true; renderCard(); }
+  else if (flipped && e.key==='1') answerCard(false);
+  else if (flipped && e.key==='2') answerCard(true);
+});
+$('#newLimit').onchange = () => { buildQueue(); renderCard(); };
+
+/* ================= Q&A ================= */
+let qaI=0, qaOn=false, qaRec=null, qaText='';
+const STOP = new Set('the a an and or but so to of in on at for with is are was were be been it this that these those you your we our they their he she his her as by from have has had do does did not can could would should will may might my me us them there here which who what when where why how also very more most much many some any all just than then if because'.split(' '));
+const stem = w => w.replace(/(ing|ed|es|s)$/,'');
+const keyWords = t => [...new Set(normWords(t).filter(w=>w.length>3 && !STOP.has(w)).map(stem))];
+function renderQA(){
+  qaI = (qaI+QA.length)%QA.length;
+  $('#qaIdx').textContent = `Question ${qaI+1}/${QA.length}`;
+  $('#qaQ').textContent = QA[qaI][0];
+  $('#qaOut').innerHTML = '';
+}
+$('#qaHear').onclick = () => speak(QA[qaI][0]);
+$('#qaPrev').onclick = () => { stopQa(true); qaI--; renderQA(); };
+$('#qaNext').onclick = () => { stopQa(true); qaI++; renderQA(); };
+$('#qaRand').onclick = () => { stopQa(true); qaI = Math.floor(Math.random()*QA.length); renderQA(); };
+$('#qaModel').onclick = () => {
+  const box = `<div class="box info" id="qaModelBox"><b>Model answer:</b> ${esc(QA[qaI][1])}</div>`;
+  $('#qaOut').insertAdjacentHTML('beforeend', box); speak(QA[qaI][1]);
+};
+function stopQa(silent){
+  if (!qaOn) return; qaOn=false;
+  const r=qaRec; qaRec=null; try{ r&&r.stop(); }catch{}
+  $('#qaRec').classList.remove('rec'); $('#qaRec').textContent='🎙️ Answer';
+  if (silent) return;
+  const spoken = new Set(normWords(qaText).map(stem)), keys = keyWords(QA[qaI][1]);
+  const hit = keys.filter(k=>spoken.has(k)), pct = keys.length ? Math.round(hit.length/keys.length*100) : 0;
+  const n = normWords(qaText).length;
+  $('#qaOut').innerHTML = `<div class="box ${pct>=50?'ok':'warn'}"><b>Your answer:</b> “${esc(qaText.trim()||'(nothing heard)')}”<br><b>Key ideas covered:</b> ${pct}% · ${n} words<br>${keys.map(k=>`<span class="kw ${spoken.has(k)?'ok':'miss'}">${esc(k)}</span>`).join('')}</div>`;
+  logActivity();
+}
+$('#qaRec').onclick = () => {
+  if (qaOn){ stopQa(); return; }
+  if (!SR){ alert('This feature needs Chrome or Edge.'); return; }
+  speechSynthesis.cancel(); qaOn=true; qaText='';
+  $('#qaRec').classList.add('rec'); $('#qaRec').textContent='⏹ Stop';
+  $('#qaOut').innerHTML = '<div class="box info">Listening... speak your answer, then press Stop.</div>';
+  const start = () => {
+    const r = new SR(); r.lang='en-US'; r.continuous=true; r.interimResults=false;
+    r.onresult = e => { for (let i=e.resultIndex;i<e.results.length;i++) if (e.results[i].isFinal) qaText += ' '+e.results[i][0].transcript; };
+    r.onerror = e => { if (e.error==='not-allowed'){ $('#qaOut').innerHTML=`<div class="box warn">${errMsg(e.error)}</div>`; stopQa(true); } };
+    r.onend = () => { if (qaOn && qaRec===r){ try{ start(); }catch{} } };
+    qaRec = r; try{ r.start(); }catch{}
+  };
+  start();
+};
+
+/* ================= QUIZ ================= */
+let quiz=null;
+function fillQuizCats(){ $('#quizCat').innerHTML = '<option value="all">All categories</option>'+allCats().map(c=>`<option>${esc(c)}</option>`).join(''); }
+$('#quizGo').onclick = () => {
+  const cat=$('#quizCat').value, pool=allWords().filter(w=>cat==='all'||w.cat===cat);
+  if (pool.length<4){ alert('You need at least 4 words for a quiz.'); return; }
+  quiz = {mode:$('#quizMode').value, qs:shuffle(pool).slice(0,10), i:0, score:0, wrong:[], pool};
+  $('#quizSetup').style.display='none'; renderQuiz();
+};
+function renderQuiz(){
+  const q=quiz, area=$('#quizArea');
+  if (q.i>=q.qs.length){
+    area.innerHTML = `<div style="text-align:center"><div class="score">${q.score}/${q.qs.length}</div>
+      <p>${q.score>=8?'Excellent! 🎉':q.score>=5?'Good job 👍':'Practice more with the flashcards 💪'}</p>
+      ${q.wrong.length?`<div class="box bad" style="text-align:left"><b>Review these:</b><br>${q.wrong.map(w=>`<b>${esc(w.en)}</b>: ${esc(w.def)}`).join('<br>')}</div>`:''}
+      <button class="btn primary" id="qAgain" style="margin-top:12px">New quiz</button></div>`;
+    $('#qAgain').onclick = () => { $('#quizSetup').style.display=''; area.innerHTML=''; };
+    return;
+  }
+  const w=q.qs[q.i], key = q.mode==='term-def' ? 'def' : 'en';
+  const opts = shuffle([w, ...shuffle(q.pool.filter(x=>x.id!==w.id && x[key]!==w[key])).slice(0,3)]);
+  const prompt = q.mode==='def-term' ? `<div class="sentence" style="font-size:1.25rem">${esc(w.def)}</div>`
+    : q.mode==='term-def' ? `<div class="sentence">${esc(w.en)} <button class="btn" id="qSay">🔊</button></div>`
+    : `<div class="sentence"><button class="btn primary" id="qSay">🔊 Listen to the word</button></div>`;
+  area.innerHTML = `<div class="muted">Question ${q.i+1}/${q.qs.length} · Score ${q.score}</div><div class="bar"><i style="width:${q.i/q.qs.length*100}%"></i></div>${prompt}<div style="margin-top:14px" id="qOpts">${opts.map(o=>`<button class="opt" data-id="${o.id}">${esc(o[key])}</button>`).join('')}</div><div id="qNext"></div>`;
+  if ($('#qSay')) $('#qSay').onclick = () => speak(w.en.replace(/\(.*?\)/g,''));
+  if (q.mode==='listen') speak(w.en.replace(/\(.*?\)/g,''));
+  $('#qOpts').querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const ok = b.dataset.id===w.id;
+    $('#qOpts').querySelectorAll('.opt').forEach(x => { x.disabled=true; if(x.dataset.id===w.id) x.classList.add('right'); });
+    if (!ok) b.classList.add('wrong');
+    if (ok) q.score++; else q.wrong.push(w);
+    grade(w.id, ok);
+    $('#qNext').innerHTML = `<button class="btn primary" id="qN" style="margin-top:8px">${q.i+1>=q.qs.length?'See result':'Next →'}</button>`;
+    $('#qN').onclick = () => { q.i++; renderQuiz(); };
+  });
+}
+
+/* ================= WORD LIST ================= */
+function fillWordCats(){ $('#wCat').innerHTML='<option value="all">All categories</option>'+allCats().map(c=>`<option>${esc(c)}</option>`).join(''); }
+function renderWords(){
+  const q=$('#wSearch').value.trim().toLowerCase(), cat=$('#wCat').value;
+  const list = allWords().filter(w => (cat==='all'||w.cat===cat) && (!q || w.en.toLowerCase().includes(q) || w.def.toLowerCase().includes(q)));
+  $('#wTable').innerHTML = '<tr><th>Word</th><th>Meaning</th><th>Level</th><th></th></tr>' + list.map(w => {
+    const b = progress[w.id]?.box||0;
+    return `<tr><td><b>${esc(w.en)}</b>${w.snd?`<br><small class="muted">/ ${esc(w.snd)} /</small>`:''}</td><td>${esc(w.def)}<br><small class="muted">${esc(w.ex||'')}</small></td><td class="dots">${'●'.repeat(b)}${'○'.repeat(5-b)}</td><td style="white-space:nowrap"><button class="btn" data-say="${w.id}">🔊</button>${w.id[0]==='c'?` <button class="btn" data-del="${w.id}">🗑</button>`:''}</td></tr>`;
+  }).join('');
+  $('#wTable').querySelectorAll('[data-say]').forEach(b => b.onclick = () => { const w=allWords().find(x=>x.id===b.dataset.say); speak(w.en.replace(/\(.*?\)/g,'')); });
+  $('#wTable').querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+    custom = custom.filter(x=>x.id!==b.dataset.del); LS.set('custom',custom); delete progress[b.dataset.del]; LS.set('progress',progress); refreshAll();
+  });
+}
+$('#wSearch').oninput = renderWords; $('#wCat').onchange = renderWords;
+$('#nwAdd').onclick = () => {
+  const en=$('#nwEn').value.trim(), def=$('#nwTr').value.trim(), ex=$('#nwEx').value.trim();
+  if (!en||!def){ $('#nwMsg').textContent='Please fill in the word and the definition.'; return; }
+  custom.push({id:'c'+Date.now(), en, def, ex, snd:'', cat:MY_CAT}); LS.set('custom',custom);
+  $('#nwEn').value=$('#nwTr').value=$('#nwEx').value=''; $('#nwMsg').textContent='Added ✓ — find it in the “'+MY_CAT+'” category.';
+  refreshAll();
+};
+$('#resetProg').onclick = () => { if(confirm('Reset all your vocabulary progress?')){ progress={}; LS.set('progress',progress); refreshAll(); } };
+
+function refreshAll(){ fillQuizCats(); fillWordCats(); renderCardCats(); buildQueue(); renderCard(); renderWords(); updateStats(); }
+
+/* ================= START ================= */
+renderHome(); renderScript(); renderPhraseCats(); renderPhrase(); renderQA(); refreshAll();
+</script>
+</body>
+</html>
