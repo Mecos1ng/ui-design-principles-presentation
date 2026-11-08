@@ -119,11 +119,29 @@ The second principle is simplicity. Every button and every line of text should h
 
 The third principle is visual hierarchy. Important things should look important. Figma's guide says we can show this with font size, contrast and spacing, and the paper also suggests putting important content near the top. Think about the camera app on your phone. The shutter button is big and in the middle, and everything else is small. You understand the screen in one second.
 
-To sum up my part, a good mobile screen respects the user's limited attention. Now I would like to hand over to [Name 2], who will talk about information presentation and layout.""",
+To sum up my part, a good mobile screen respects the user's limited attention.""",
  sources=["{adipat} p. 2286, Table 5: 'use succinct and meaningful labels'; 'important content should be placed near the top of the hierarchy'; 'allow users to know where they are'.",
           "{figmaui} Figma, Principle 1 Hierarchy (font size and weight, contrast, spacing) and Principle 2 Progressive disclosure.",
           "Clarity questions and the camera-app example are our own summary and example."],
  tr="Kısa ve anlamlı etiketler ile önemli içeriğin üstte olması makalenin s. 2286'daki Tablo 5'inden geliyor. 'Adım adım göster' (progressive disclosure) ve 'yazı boyutu, kontrast, boşluk ile hiyerarşi' Figma'nın UI tasarım ilkeleri yazısından {figmaui}: Principle 1 ve 2. 'Neredeyim, ne yapabilirim, sonra ne olacak?' soruları ve kamera uygulaması örneği bizim kendi özetimiz ve örneğimiz. Hoca sorarsa: 'Bu, makaledeki kuralları bildiğimiz bir uygulamayla açıklamak için verdiğimiz kendi örneğimiz' deyin.",
+),
+# ---------------------------------------------------------------- HANDOVER 1 -> 2
+dict(
+ kind="handover",
+ from_speaker=1,
+ speaker=2,
+ title="Part 2: Information, Layout and Navigation",
+ bullets=[
+  (0, "Presenter 1  ➜  Presenter 2"),
+  (0, "Presenting information on a small screen"),
+  (0, "Layout: thumb zone and touch targets"),
+  (0, "Navigation and consistency"),
+  (0, "Readable text and colour"),
+ ],
+ script_from="""Now I would like to hand over to [Name 2], who will talk about information presentation and layout.""",
+ script="""Thank you, [Name 1]. Hello everyone, I am [Name 2]. My part is about the third component of the framework, information presentation. After that, I will talk about layout, navigation and readable text.""",
+ sources=["Handover slide: no new information. The topics come from the framework in {adipat} p. 2282, Figure 1."],
+ tr="Bu bir geçiş (handover) slaytı: 1. konuşmacı sözü burada 2. konuşmacıya verir. Yeni bilgi yok; başlıklar 2. konuşmacının anlatacağı slaytların özeti.",
 ),
 # ---------------------------------------------------------------- SPEAKER 2
 dict(
@@ -136,9 +154,7 @@ dict(
   (0, "Always show users where they are {adipat}"),
   (0, "Maps and images: overview first, then zoom in {adipat}"),
  ],
- script="""Thank you, [Name 1]. Hello everyone, I am [Name 2]. My part is about the third component of the framework, information presentation. After that, I will talk about layout, navigation and readable text.
-
-The main problem is simple: there is a lot of information, but very little space. Adipat and Zhang collect several guidelines from earlier studies. First, avoid horizontal scrolling. People are used to scrolling up and down, but scrolling left and right is easy to miss. Second, keep the menu structure shallow. It is better to have more items on one level than many levels inside each other. Third, design the shortest path to each page, so users can finish a task with only a few taps. Fourth, always show users where they are, for example by highlighting the current page. And for maps and pictures, the paper suggests giving an overview first and then letting people zoom in for more detail.""",
+ script="""The main problem is simple: there is a lot of information, but very little space. Adipat and Zhang collect several guidelines from earlier studies. First, avoid horizontal scrolling. People are used to scrolling up and down, but scrolling left and right is easy to miss. Second, keep the menu structure shallow. It is better to have more items on one level than many levels inside each other. Third, design the shortest path to each page, so users can finish a task with only a few taps. Fourth, always show users where they are, for example by highlighting the current page. And for maps and pictures, the paper suggests giving an overview first and then letting people zoom in for more detail.""",
  sources=["{adipat} p. 2286, Table 5 (1-dimensional content): avoid horizontal scrolling; limit the depth of the menu hierarchy but expand the breadth; design for shortest path; let users know where they are. Table 5 (2-dimensional content): overview + zooming. Same page (presentation optimization): users 'simply scroll up/down (while ignore left/right scrolling)'; 'easy to miss' is our wording."],
  tr="Bu slaytın tamamı makalenin s. 2286'daki Tablo 5'inden geliyor (bilgi sunumu kuralları). Tabloda 'Limit the depth ... but expand the breadth' ifadesi var; biz bunu 'menüleri sığ tut' diye özetledik.",
 ),
@@ -201,10 +217,28 @@ Contrast is very important. Contrast is the difference between the text colour a
 
 Both WCAG and the paper by Adipat and Zhang give the same advice about colour: do not use colour as the only way to give information. Some people cannot see some colours clearly. So, an error should have an icon or a short message, not only a red colour.
 
-To summarise my part: show less but clearer information, put actions where the thumb can reach, keep navigation consistent, and make text easy to read. Now [Name 3] will talk about data entry, context and feedback. Thank you.""",
+To summarise my part: show less but clearer information, put actions where the thumb can reach, keep navigation consistent, and make text easy to read.""",
  sources=["{wcag} WCAG 2.1, Success Criterion 1.4.3 Contrast (Minimum): 4.5:1, large text 3:1; SC 1.4.1 Use of Color.",
           "{adipat} p. 2284, Table 3 (Color blind): 'Do not rely on color'; 'use black-and-white or very contrast colors'."],
  tr="4.5:1 ve 3:1 değerleri WCAG 2.1'in 1.4.3 numaralı başarı kriterinden; 'sadece renge güvenme' kuralı ise 1.4.1'den {wcag}. Makale de s. 2284'teki Tablo 3'te renk körleri için aynı şeyi söylüyor {adipat}. Font tavsiyesi genel bir tasarım pratiği.",
+),
+# ---------------------------------------------------------------- HANDOVER 2 -> 3
+dict(
+ kind="handover",
+ from_speaker=2,
+ speaker=3,
+ title="Part 3: Data Entry, Context and Feedback",
+ bullets=[
+  (0, "Presenter 2  ➜  Presenter 3"),
+  (0, "Data entry: typing, writing and speaking"),
+  (0, "Context: where is the user?"),
+  (0, "Feedback and accessibility"),
+  (0, "Testing and conclusion"),
+ ],
+ script_from="""Now I would like to hand over to [Name 3], who will talk about data entry, context and feedback. Thank you.""",
+ script="""Thank you, [Name 2]. Hi everyone, I am [Name 3]. I will talk about data entry and context, then feedback, accessibility and testing.""",
+ sources=["Handover slide: no new information. The topics come from the framework in {adipat} p. 2282, Figure 1."],
+ tr="Bu bir geçiş (handover) slaytı: 2. konuşmacı sözü burada 3. konuşmacıya verir. Yeni bilgi yok; başlıklar 3. konuşmacının anlatacağı slaytların özeti.",
 ),
 # ---------------------------------------------------------------- SPEAKER 3
 dict(
@@ -219,9 +253,7 @@ dict(
   (0, "Multimodal: voice, touch and keys together {adipat}"),
   (0, "Choose by task, device and environment {adipat}"),
  ],
- script="""Thank you, [Name 2]. Hi everyone, I am [Name 3]. I will talk about data entry and context, then feedback, accessibility and testing.
-
-The paper compares several input methods. A soft keyboard on the touch screen is flexible, but it needs your full visual attention. Handwriting feels natural, but recognition makes mistakes. Voice is hands-free and fast, but in 2005 it was not very accurate. It is also a bad choice in noisy places or when privacy matters.
+ script="""The paper compares several input methods. A soft keyboard on the touch screen is flexible, but it needs your full visual attention. Handwriting feels natural, but recognition makes mistakes. Voice is hands-free and fast, but in 2005 it was not very accurate. It is also a bad choice in noisy places or when privacy matters.
 
 The authors see multimodal input as the most promising: voice, touch and keys together. Today you can type a message or just speak it. The lesson is to choose the input method by task, device and environment.""",
  sources=["{adipat} p. 2288, section 'Data entry methods' and Table 8: soft keyboard (high visual attention), handwriting (recognition errors), voice (hands-free, faster, low accuracy; not for noisy/public places, privacy), multimodal access (Lai, 2004: users prefer multimodal).",
@@ -358,7 +390,20 @@ def _resolve():
         d["sources"] = [fix(x) for x in d["sources"]]
         d["tr"] = fix(d["tr"])
         d["script"] = fix(d["script"])
+        if "script_from" in d:
+            d["script_from"] = fix(d["script_from"])
     REFERENCES = [REFERENCES[k] for k in order]
+
+
+def speaker_script(sp):
+    """Full spoken text of one presenter, in slide order (handover lines included)."""
+    parts = []
+    for d in SLIDES:
+        if d.get("from_speaker") == sp:
+            parts.append(d["script_from"])
+        if d["speaker"] == sp:
+            parts.append(d["script"])
+    return "\n\n".join(parts)
 
 
 _resolve()

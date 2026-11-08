@@ -113,7 +113,14 @@ for i, data in enumerate(C.SLIDES):
     s = proto_a if i == 0 else proto_b if i == 1 else clone_slide(PROTO_TREE)
     set_title(s, data["title"])
     set_body(s, data["bullets"])
-    notes = f"PRESENTER {data['speaker']} – SCRIPT\n\n{data['script']}\n\nSOURCES FOR THIS SLIDE\n" + "\n".join("• " + x for x in data["sources"])
+    if data.get("kind") == "handover":
+        # first line ("Presenter 1 ➜ Presenter 2") stands out in bold
+        ph(s, idx=1).text_frame.paragraphs[0].runs[0].font.bold = True
+        notes = (f"HANDOVER – PRESENTER {data['from_speaker']} ENDS HERE\n\n{data['script_from']}\n\n"
+                 f"PRESENTER {data['speaker']} STARTS HERE\n\n{data['script']}\n\n"
+                 "SOURCES FOR THIS SLIDE\n" + "\n".join("• " + x for x in data["sources"]))
+    else:
+        notes = f"PRESENTER {data['speaker']} – SCRIPT\n\n{data['script']}\n\nSOURCES FOR THIS SLIDE\n" + "\n".join("• " + x for x in data["sources"])
     set_notes(s, notes)
     content_slides.append(s)
 
@@ -159,7 +166,9 @@ lines = [
     "",
 ]
 for i, d in enumerate(C.SLIDES, 3):
-    lines += [f"### Slayt {i} – {d['title']} (Konuşmacı {d['speaker']})", "", d["tr"], "", "**Kaynak detayı:**", ""]
+    who = (f"Geçiş: Konuşmacı {d['from_speaker']} ➜ Konuşmacı {d['speaker']}"
+           if d.get("kind") == "handover" else f"Konuşmacı {d['speaker']}")
+    lines += [f"### Slayt {i} – {d['title']} ({who})", "", d["tr"], "", "**Kaynak detayı:**", ""]
     lines += ["- " + x for x in d["sources"]]
     lines += ["", "**Slayttaki maddeler:**", ""]
     lines += [("  " * lvl) + "- " + t for lvl, t in d["bullets"]]
@@ -171,7 +180,7 @@ lines += ["", "## References (IEEE)", ""]
 lines += [f"{i}. [{i}] {r}" for i, r in enumerate(C.REFERENCES, 1)]
 lines += ["", "## Konuşma süreleri (kelime sayısı, ~120 kelime/dk)", ""]
 for sp in (1, 2, 3):
-    words = sum(len(re.findall(r"\S+", d["script"])) for d in C.SLIDES if d["speaker"] == sp)
+    words = len(re.findall(r"\S+", C.speaker_script(sp)))
     lines.append(f"- Konuşmacı {sp}: {words} kelime ≈ {words / 120:.1f} dk")
 guide = os.path.join(os.path.dirname(os.path.abspath(OUT)), "Kaynak_Rehberi.md")
 with open(guide, "w", encoding="utf-8") as f:

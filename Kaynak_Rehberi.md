@@ -82,7 +82,23 @@ Kısa ve anlamlı etiketler ile önemli içeriğin üstte olması makalenin s. 2
 - Important content goes near the top [1]
 - Example: the camera app has one big shutter button
 
-### Slayt 7 – Presenting Information on a Small Screen (Konuşmacı 2)
+### Slayt 7 – Part 2: Information, Layout and Navigation (Geçiş: Konuşmacı 1 ➜ Konuşmacı 2)
+
+Bu bir geçiş (handover) slaytı: 1. konuşmacı sözü burada 2. konuşmacıya verir. Yeni bilgi yok; başlıklar 2. konuşmacının anlatacağı slaytların özeti.
+
+**Kaynak detayı:**
+
+- Handover slide: no new information. The topics come from the framework in [1] p. 2282, Figure 1.
+
+**Slayttaki maddeler:**
+
+- Presenter 1  ➜  Presenter 2
+- Presenting information on a small screen
+- Layout: thumb zone and touch targets
+- Navigation and consistency
+- Readable text and colour
+
+### Slayt 8 – Presenting Information on a Small Screen (Konuşmacı 2)
 
 Bu slaytın tamamı makalenin s. 2286'daki Tablo 5'inden geliyor (bilgi sunumu kuralları). Tabloda 'Limit the depth ... but expand the breadth' ifadesi var; biz bunu 'menüleri sığ tut' diye özetledik.
 
@@ -98,7 +114,7 @@ Bu slaytın tamamı makalenin s. 2286'daki Tablo 5'inden geliyor (bilgi sunumu k
 - Always show users where they are [1]
 - Maps and images: overview first, then zoom in [1]
 
-### Slayt 8 – Layout: Thumb Zone and Touch Targets (Konuşmacı 2)
+### Slayt 9 – Layout: Thumb Zone and Touch Targets (Konuşmacı 2)
 
 %49 tek el bilgisi Hoober'ın 2013 gözlem çalışmasından [4]. Fitts Yasası 1954 tarihli makaleden [6]. Apple 44×44 pt değerini 'varsayılan (default) kontrol boyutu' olarak veriyor; minimum ise 28×28 pt [7]. Google 'en az 48×48 dp' diyor [8]. 'Thumb zone' terimi ve butonlar arasında boşluk bırakma önerisi Figma'nın Fitts Yasası yazısından [5]. 'Delete account' ise bizim örneğimiz.
 
@@ -121,7 +137,7 @@ Bu slaytın tamamı makalenin s. 2286'daki Tablo 5'inden geliyor (bilgi sunumu k
   - Google: at least 48 × 48 dp [8]
 - Leave enough space between buttons [5]
 
-### Slayt 9 – Navigation and Consistency (Konuşmacı 2)
+### Slayt 10 – Navigation and Consistency (Konuşmacı 2)
 
 3–5 hedef bilgisi Material Design 3'ün 'Navigation bar' sayfasından [9]. Tutarlılık kuralı makalenin s. 2286'daki Tablo 5'inden, birebir: 'consistent buttons, layout, and menu naming'. Figma'nın UI ilkeleri yazısındaki 3. ilke (Consistency) de aynı şeyi söylüyor [3]. Hamburger menü ve geri tuşu yorumları bizim gözlemimiz.
 
@@ -140,7 +156,7 @@ Bu slaytın tamamı makalenin s. 2286'daki Tablo 5'inden geliyor (bilgi sunumu k
 - Highlight the current page or section [1]
 - Same buttons, layout and menu names everywhere [1], [3]
 
-### Slayt 10 – Readable Text and Colour (Konuşmacı 2)
+### Slayt 11 – Readable Text and Colour (Konuşmacı 2)
 
 4.5:1 ve 3:1 değerleri WCAG 2.1'in 1.4.3 numaralı başarı kriterinden; 'sadece renge güvenme' kuralı ise 1.4.1'den [10]. Makale de s. 2284'teki Tablo 3'te renk körleri için aynı şeyi söylüyor [1]. Font tavsiyesi genel bir tasarım pratiği.
 
@@ -158,7 +174,23 @@ Bu slaytın tamamı makalenin s. 2286'daki Tablo 5'inden geliyor (bilgi sunumu k
 - Do not use colour as the only signal [1], [10]
 - Add an icon or a word next to the colour
 
-### Slayt 11 – Data Entry: Typing, Writing and Speaking (Konuşmacı 3)
+### Slayt 12 – Part 3: Data Entry, Context and Feedback (Geçiş: Konuşmacı 2 ➜ Konuşmacı 3)
+
+Bu bir geçiş (handover) slaytı: 2. konuşmacı sözü burada 3. konuşmacıya verir. Yeni bilgi yok; başlıklar 3. konuşmacının anlatacağı slaytların özeti.
+
+**Kaynak detayı:**
+
+- Handover slide: no new information. The topics come from the framework in [1] p. 2282, Figure 1.
+
+**Slayttaki maddeler:**
+
+- Presenter 2  ➜  Presenter 3
+- Data entry: typing, writing and speaking
+- Context: where is the user?
+- Feedback and accessibility
+- Testing and conclusion
+
+### Slayt 13 – Data Entry: Typing, Writing and Speaking (Konuşmacı 3)
 
 Giriş yöntemleri makalenin s. 2288'deki 'Data entry methods' bölümü ve Tablo 8'den. 'Kullanıcılar çok kipli (multimodal) girişi tercih ediyor' bilgisini makale Lai (2004) çalışmasına dayandırıyor; biz makale üzerinden aktarıyoruz. 'Görev, cihaz, ortam' ayrımı s. 2282'deki 'Related Work' bölümünde geçiyor.
 
@@ -177,7 +209,7 @@ Giriş yöntemleri makalenin s. 2288'deki 'Data entry methods' bölümü ve Tabl
 - Multimodal: voice, touch and keys together [1]
 - Choose by task, device and environment [1]
 
-### Slayt 12 – Context: Where Is the User? (Konuşmacı 3)
+### Slayt 14 – Context: Where Is the User? (Konuşmacı 3)
 
 Bağlam (context) tanımı ve karanlıkta ekranın parlaklaşması örneği makalenin s. 2285'inden. Kontrol kullanıcıda olmalı kuralları Tablo 4'ten. AVM reklamı örneği de makalenin kendi örneği. Otomatik parlaklık ve karanlık mod ise bugünden verdiğimiz kendi örneğimiz.
 
@@ -195,7 +227,7 @@ Bağlam (context) tanımı ve karanlıkta ekranın parlaklaşması örneği maka
   - tell them before the interface changes
 - Send information only when users need it [1]
 
-### Slayt 13 – Feedback: Tell Users What Is Happening (Konuşmacı 3)
+### Slayt 15 – Feedback: Tell Users What Is Happening (Konuşmacı 3)
 
 'Visibility of system status' Nielsen'in 10 sezgisel kuralının birincisi, hata mesajları ise dokuzuncusu [11]. Görsel, ses ve titreşim geri bildirimi makalenin s. 2287'deki Tablo 7'sinden. 0.1, 1 ve 10 saniye sınırları Nielsen'in 1993 makalesinden [12]. 'Net hata mesajı' kuralı makalede de geçiyor (s. 2286, Tablo 5). 'Error 404' örneği bizim örneğimiz.
 
@@ -216,7 +248,7 @@ Bağlam (context) tanımı ve karanlıkta ekranın parlaklaşması örneği maka
   - 10 s: users start to lose attention
 - Clear error messages that help users recover [1], [11]
 
-### Slayt 14 – Accessibility: Design for Everyone (Konuşmacı 3)
+### Slayt 16 – Accessibility: Design for Everyone (Konuşmacı 3)
 
 1.3 milyar kişi ve %16 (yaklaşık 6'da 1) rakamı Dünya Sağlık Örgütü'nün 2022 raporundan [13]. Engelli kullanıcılar için kurallar makalenin s. 2284'teki Tablo 3'ünden. VoiceOver ve TalkBack telefonlardaki ekran okuyucuların isimleri, genel bilgi.
 
@@ -234,7 +266,7 @@ Bağlam (context) tanımı ve karanlıkta ekranın parlaklaşması örneği maka
 - Deaf users: visual information and vibration alerts [1]
 - Support screen readers and bigger text sizes
 
-### Slayt 15 – Testing and Conclusion (Konuşmacı 3)
+### Slayt 17 – Testing and Conclusion (Konuşmacı 3)
 
 'Yaklaşık 5 kullanıcı' bilgisi Nielsen ve Landauer'ın 1993 tarihli matematiksel modelinden geliyor [14]. Dikkat: bu bir yasa değil, planlama tahmini. Hoca sorarsa 'yaklaşık' deyin. Özet makalenin Sonuç bölümünden (s. 2288). 'Test et, iyileştir, tekrar test et' önerisi Figma'nın yazısındaki 'Conduct testing' ipucuyla da destekleniyor [3]. Son cümle bizim kendi sonucumuz.
 
@@ -292,5 +324,5 @@ Bağlam (context) tanımı ve karanlıkta ekranın parlaklaşması örneği maka
 ## Konuşma süreleri (kelime sayısı, ~120 kelime/dk)
 
 - Konuşmacı 1: 668 kelime ≈ 5.6 dk
-- Konuşmacı 2: 642 kelime ≈ 5.3 dk
+- Konuşmacı 2: 650 kelime ≈ 5.4 dk
 - Konuşmacı 3: 663 kelime ≈ 5.5 dk
