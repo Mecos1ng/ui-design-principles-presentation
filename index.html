@@ -118,7 +118,7 @@ ul.clean li{margin-bottom:5px}
   <section id="tab-home" class="active">
     <div class="card">
       <h2>Our presentation</h2>
-      <div><b>Topic:</b> User Interface Design Principles for Mobile Apps</div>
+      <div><b>Topic:</b> User Interface Design for Mobile Applications (main source: Adipat &amp; Zhang, AMCIS 2005)</div>
       <div class="muted">3 speakers × 5 minutes = 15 minutes. At a calm speed (about 120 words per minute), 5 minutes is about 550–650 words.</div>
       <div class="grid3" style="margin-top:12px">
         <input class="nm" data-i="0" placeholder="Speaker 1 name">
@@ -399,75 +399,103 @@ const BUILTIN = [];
 }); })();
 
 const TITLES = {
-  1:'Introduction & Core Principles',
-  2:'Layout, Navigation & Readable Text',
-  3:'Icons, Consistency, Feedback & Conclusion'
+  "1": "Mobile UI Challenges, the Framework & the User",
+  "2": "Information Presentation, Layout, Navigation & Text",
+  "3": "Data Entry, Context, Feedback, Accessibility & Conclusion"
 };
 const KEYS = {
-  1:['Greeting and team introduction','Hook question: how often do you check your phone?','What is a user interface (UI)?','Why mobile UI is special: small screen, people in a hurry, many choices','Principle 1 – Clarity: where am I? what can I do? what happens next?','Principle 2 – Simplicity: less is more, Hick\'s Law','Principle 3 – Visual hierarchy: size, color, position','Handover to Speaker 2'],
-  2:['Thumb zone: bottom of the screen is easy to reach','Fitts\'s Law: big, close targets are easier to hit','Touch targets: 44 × 44 points (Apple), 48 × 48 dp (Google), space between buttons','Navigation patterns: tab bar, drawer (hamburger) menu, top bar with back button','Advice: maximum 5 tabs, highlight the current tab, back button must work; Jakob\'s Law','Typography: at least 16 points, simple font, maximum 2 fonts','Contrast: 4.5 to 1 for normal text, 3 to 1 for large text (WCAG); never use color alone','Handover to Speaker 3'],
-  3:['Icons: familiar, add labels, same style','Consistency and design systems (Material Design, Human Interface Guidelines)','Feedback: visibility of system status (Nielsen); haptic feedback','Speed: 0.1 s feels instant, 10 s loses attention; skeleton screen, progress bar','Error messages: plain language, explain, offer a solution; Undo','Accessibility: 1 in 6 people, screen readers, text size','User testing: even 5 users find most big problems; design is a cycle','Summary of the whole talk + final sentence + thank you']
+  "1": [
+    "Why Are Mobile Interfaces Difficult?: Small screen, low resolution and slow data entry [1]; Users are often walking, talking or doing another task [1]; Four typical problems [1]:; Desktop design rules do not simply work on phones [1]",
+    "A Framework for Mobile Interface Design: Adipat and Zhang suggest four parts to think about [1]:; Our talk follows these four parts",
+    "The User: Reduce Cognitive Load: Working memory is limited [1]; Mobile users often do two things at once [1]; What designers can do [1]:; More choices mean slower decisions (Hick's Law) [2]",
+    "Clarity, Simplicity and Visual Hierarchy: Clarity: Where am I? What can I do? What happens next?; Use short and meaningful labels [1]; Simplicity: show only what is needed, step by step [3]; Visual hierarchy: font size, contrast and spacing [3]; Important content goes near the top [1]; Example: the camera app has one big shutter button"
+  ],
+  "2": [
+    "Presenting Information on a Small Screen: Avoid horizontal scrolling [1]; Keep menus shallow: fewer levels, more items per level [1]; Design the shortest path to each page [1]; Always show users where they are [1]; Maps and images: overview first, then zoom in [1]",
+    "Layout: Thumb Zone and Touch Targets: 49% of people touching their phone used only one hand [4]; Thumb zone: put frequent actions where the thumb can reach [5]; Big, close targets are faster to hit (Fitts's Law) [6]; Touch target size:; Leave enough space between buttons [5]",
+    "Navigation and Consistency: Bottom navigation bar: three to five main destinations [9]; Hamburger menu saves space, but hides the options; The back button must work as users expect; Highlight the current page or section [1]; Same buttons, layout and menu names everywhere [1], [3]",
+    "Readable Text and Colour: Use simple, readable fonts; Minimum contrast ratio [10]:; Do not use colour as the only signal [1], [10]; Add an icon or a word next to the colour"
+  ],
+  "3": [
+    "Data Entry: Typing, Writing and Speaking: Soft keyboard: needs full visual attention [1]; Handwriting: natural, but recognition makes errors [1]; Voice: hands-free and fast, but [1]:; Multimodal: voice, touch and keys together [1]; Choose by task, device and environment [1]",
+    "Context: Where Is the User?: Context: location, people nearby, noise, light [1]; Context-aware apps adapt, e.g. a brighter screen in the dark [1]; But users must stay in control [1]:; Send information only when users need it [1]",
+    "Feedback: Tell Users What Is Happening: Visibility of system status [11]; Feedback can be visual, sound or vibration [1]; Response time limits [12]:; Clear error messages that help users recover [1], [11]",
+    "Accessibility: Design for Everyone: About 1.3 billion people (1 in 6) have a significant disability [13]; Blind users: audio, vibration, sound confirmation [1]; Colour-blind users: do not rely on colour, use strong contrast [1]; Deaf users: visual information and vibration alerts [1]; Support screen readers and bigger text sizes",
+    "Testing and Conclusion: Designers are not users, so test with real people; A small test with about 5 users finds most big problems [14]; Test, improve, test again [3]; Remember the four parts: user, context, information, data entry [1]; A good mobile interface is clear, simple, consistent and friendly"
+  ]
 };
 const SCRIPTS = {
-1:`Good morning everyone, and thank you for coming. Our topic today is User Interface Design Principles for Mobile Apps. My name is [Name 1]. Together with [Name 2] and [Name 3], we will talk for about fifteen minutes. Each of us will speak for five minutes.
+1:`Good morning everyone, and thank you for being here. Our topic today is user interface design for mobile applications. My name is [Name 1], and I am here with [Name 2] and [Name 3]. Each of us will speak for about five minutes.
 
-Let me start with a simple question. How many times do you check your phone every day? For most people, the answer is more than fifty times. Every time we open an app, we meet its user interface, or UI. The user interface is everything you see and touch on the screen: the buttons, the text, the colors, the icons, and the menus.
+How many times did you look at your phone today? Probably more times than you can count, and every time you used a user interface.
 
-Why is UI design so important on mobile? There are three main reasons. First, the screen is small. We do not have much space, so every element must have a clear purpose. Second, people use their phones everywhere: on the bus, in a café, or while walking. They are often in a hurry and they are often distracted. Third, users have a lot of choice. If an app is confusing, they delete it in a few seconds and download another one.
+Our main source is a paper by Boonlit Adipat and Dongsong Zhang from the AMCIS conference in 2005. Phones looked very different back then, but many of its ideas are still true today.
 
-Here is our plan for today. In my part, I will explain the basic principles: clarity, simplicity, and visual hierarchy. [Name 2] will talk about layout, navigation, and readable text. Finally, [Name 3] will speak about icons, consistency, feedback, and accessibility, and then close our presentation.
+The authors say that mobile design is hard because of the device itself. Screens were small, the resolution was low, and typing was slow. People also use their phones while walking or talking, so their attention is divided.
 
-Now, let me begin with the first principle: clarity. A clear interface tells the user three things: where am I, what can I do here, and what will happen next? For example, a button with the text "Pay now" is much clearer than a button with only a small picture. Good designers use simple words and familiar icons. They do not make users guess.
+The paper lists four typical problems. First, too much information for a small screen. Second, users have to remember what icons and labels mean. Third, people get lost while navigating. And fourth, small keyboards need a lot of attention. So, design rules for desktop computers cannot just be copied to phones.
 
-The second principle is simplicity. There is a famous idea in design: less is more. Every extra button or extra line of text makes the screen more difficult to understand. A simple screen has one main goal. Think about the camera app on your phone. The most important button, the shutter button, is big and in the center. Everything else is smaller. This is simplicity. A good rule is to ask, "Does the user really need this element on this screen?" If the answer is no, remove it.
+To deal with these problems, the authors propose a framework with four parts. The first part is the user. Different people have different needs, preferences and abilities. The second part is context. This means the place and the situation, for example a noisy street or a dark room. The third part is information presentation, which means how we show content on a small screen. And the fourth part is data entry, which means how people give input, for example with a keyboard or with their voice.
 
-Simplicity also connects to a law called Hick's Law. It says that when people have more choices, they need more time to decide. So, we should show only the most important options first and move the others to a second screen or a menu.
+We built our presentation on this framework. In my part, I will talk about the user. [Name 2] will talk about information presentation, layout and readable text. Then [Name 3] will cover data entry, context, feedback and accessibility.
 
-The third principle is visual hierarchy. Visual hierarchy means that the most important things look the most important. We can create hierarchy with size, color, and position. A large, bold title catches the eye first. A bright button attracts attention. Smaller grey text is for less important information. Look at a news app: the headline is big, the picture is large, and the date is small and light. In one second, you understand what is important.
+Let me begin with the user and cognitive load, which means the mental effort a person needs. Our working memory is small. The paper says a good interface lets people use their memory for their task, not for the interface. On a phone this matters even more, because users often do something else at the same time, like reading a map while driving.
 
-When these three principles work together, the app feels natural. The user does not need a manual or a tutorial. They just start using it.
+The authors give practical advice. Organise information in a hierarchy, so users go deeper only when they want. Put the most important information near the top. Help users focus on one part of the screen. And give them a search function.
 
-To sum up, clear, simple, and well-organized screens help users reach their goals quickly. Now I would like to give the floor to [Name 2], who will explain how layout and navigation make this possible. Thank you.`,
+This idea connects to Hick's Law from psychology. In 1952, William Hick showed that people need more time to make a decision when they have more choices. So we should show the main options first and move the others to a second screen.
 
-2:`Thank you, [Name 1]. Hello everyone, I am [Name 2]. In my part, I will talk about layout, navigation, and readable text. These things decide how easily people can move through an app and understand what they see.
+From these ideas, we can take three simple principles. The first is clarity. A clear screen answers three questions: where am I, what can I do here, and what happens next? For example, a button that says "Pay now" is clearer than a small picture alone. The paper also says that labels should be short and meaningful.
 
-Let's start with layout. When we design a mobile screen, the first question is: how do people hold their phone? Many people use their phone with one hand, and they use their thumb to touch the screen. Because of this, designers talk about the thumb zone. The thumb zone is the area of the screen that your thumb can reach easily. On a large phone, this is usually the bottom center of the screen. The top corners are the hardest places to reach.
+The second principle is simplicity. Every button and every line of text should have a reason to be there. If the user does not need something on this screen, we should remove it. Figma's design guide calls a related idea progressive disclosure: show information step by step, so the screen never feels too full.
 
-What does this mean for design? Put the most important and most frequent actions in the easy zone, near the bottom. Put rare or dangerous actions, such as "Delete account", in places that are harder to reach, so that people do not press them by accident. This idea is connected to Fitts's Law. It says that big targets that are close to your finger are faster and easier to hit.
+The third principle is visual hierarchy. Important things should look important. Figma's guide says we can show this with font size, contrast and spacing, and the paper also suggests putting important content near the top. Think about the camera app on your phone. The shutter button is big and in the middle, and everything else is small. You understand the screen in one second.
 
-That brings me to touch targets. A touch target is the area that reacts when you tap. Your finger is much bigger than a mouse pointer, so touch targets must be large enough. Apple recommends a minimum size of forty-four by forty-four points. Google's Material Design recommends forty-eight by forty-eight density-independent pixels. We also need space between buttons. If two buttons are too close, users will tap the wrong one and feel frustrated.
+To sum up my part, a good mobile screen respects the user's limited attention. Now I would like to hand over to [Name 2], who will talk about information presentation and layout.`,
 
-Now let's talk about navigation. Navigation is the way users move between screens. A good navigation system answers two questions: where am I, and how do I go somewhere else?
+2:`Thank you, [Name 1]. Hello everyone, I am [Name 2]. My part is about the third component of the framework, information presentation. After that, I will talk about layout, navigation and readable text.
 
-There are three common patterns. The first is the bottom tab bar. You can see it in Instagram or YouTube. It shows three to five main sections, and it is always visible. It is easy to reach with your thumb, so it is the best choice for most apps. The second pattern is the drawer menu, also called the hamburger menu. It saves space, but people often forget it exists, because out of sight means out of mind. The third pattern is the top bar with a back button. It is useful when users go deeper into a flow, for example from a product list to a product page. My advice is simple: use five tabs at most, always highlight the current tab, and make sure that the back button works the way users expect. Remember Jakob's Law: users spend most of their time in other apps, so they expect your app to work in a similar way.
+The main problem is simple: there is a lot of information, but very little space. Adipat and Zhang collect several guidelines from earlier studies. First, avoid horizontal scrolling. People are used to scrolling up and down, but scrolling left and right is easy to miss. Second, keep the menu structure shallow. It is better to have more items on one level than many levels inside each other. Third, design the shortest path to each page, so users can finish a task with only a few taps. Fourth, always show users where they are, for example by highlighting the current page. And for maps and pictures, the paper suggests giving an overview first and then letting people zoom in for more detail.
 
-My last topic is readable text. Let me begin with typography, which means the style and size of text. A good rule is to use at least sixteen points for body text. Use a simple, clean font, and try not to use more than two fonts in one app.
+Now, layout. How do people actually hold their phones? In 2013, Steven Hoober watched people using their phones in streets, airports and cafés more than a thousand times. Of the people who were touching the screen, forty-nine percent used only one hand. So the thumb does most of the work. Figma's guide on Fitts's Law calls the easy area the thumb zone. On most phones, it is the lower middle part of the screen. That is why we should put frequent actions there, and put dangerous actions, like "Delete account", in places that are harder to reach.
 
-Then there is contrast. Contrast is the difference between the text color and the background color. The Web Content Accessibility Guidelines, called WCAG, say that normal text needs a contrast ratio of at least four point five to one. Large text needs at least three to one. Also, do not use color alone to give information. Around eight percent of men have some form of color blindness, so an error should have an icon or a message as well as a red color.
+This is connected to Fitts's Law. In 1954, Paul Fitts showed that big targets that are close to us are faster to hit. A finger is much less exact than a mouse pointer, so buttons need to be big enough. Apple's guidelines give a default size of forty-four by forty-four points for controls on the iPhone. Google's Material Design says touch targets should be at least forty-eight by forty-eight density-independent pixels. Figma also reminds us to leave enough space between buttons, or people will tap the wrong one.
 
-To summarize, a good layout puts important actions where thumbs can reach, good navigation shows users where they are, and readable text helps everyone. Now, [Name 3] will talk about icons, consistency, and feedback. Thank you.`,
+Next, navigation. Good navigation answers two questions: where am I, and how can I go somewhere else? The most common pattern today is the bottom navigation bar, like in Instagram or YouTube. Google's Material Design says to use it for three to five main destinations. It is always visible and easy to reach with the thumb. The hamburger menu saves space, but the options are hidden, so many people forget that they are there. And the back button should always do what users expect.
 
-3:`Thank you, [Name 2]. Hi everyone, my name is [Name 3]. I will talk about icons, consistency, feedback, and accessibility. Then I will close our presentation.
+Here the paper gives a very important rule: use consistent buttons, layout and menu names in the whole application. If a page is called "Profile" on one screen, do not call it "Account" on another screen. Figma's guide explains why: when a button looks and works the same everywhere, users stop thinking about the interface and focus on their task.
 
-Let's begin with icons. Icons save space and help users understand things quickly, but only if they are familiar. A magnifying glass means search. A house means home. A gear means settings. If you invent a strange icon, users will be confused. When an icon is not completely clear, add a text label. Icons should also have the same style, with the same line thickness and the same corner shape.
+My last topic is readable text. Use a simple font that is easy to read, and do not mix too many font styles in one app.
 
-This idea brings me to consistency, which is one of the most important principles. Consistency means that similar things look and behave in a similar way. If a blue button means "continue" on one screen, it should not mean "cancel" on another screen. Consistency makes an app predictable, and predictable apps are easy to learn. Big companies create design systems to keep this consistency. A design system is a collection of rules, colors, components, and guidelines. Two famous examples are Google's Material Design and Apple's Human Interface Guidelines.
+Contrast is very important. Contrast is the difference between the text colour and the background colour. The Web Content Accessibility Guidelines, or WCAG, ask for a contrast ratio of at least four point five to one for normal text, and three to one for large text.
 
-Now, feedback. Imagine you press a button and nothing happens. You do not know if the app is working or broken, so you press again, and again. This is a bad experience. Good UI always tells the user what is happening. Jakob Nielsen calls this principle visibility of system status. Feedback can be visual, like a button that changes color when you tap it. It can be a sound, or a small vibration, which we call haptic feedback. Or it can be a message, such as "Your photo was uploaded."
+Both WCAG and the paper by Adipat and Zhang give the same advice about colour: do not use colour as the only way to give information. Some people cannot see some colours clearly. So, an error should have an icon or a short message, not only a red colour.
 
-Speed is also part of feedback. If a response takes less than one tenth of a second, it feels instant. After ten seconds, users lose attention. So, if something takes time, show a loading indicator. Even better, use a skeleton screen, which shows a grey shape of the content while it loads. For longer tasks, show a progress bar.
+To summarise my part: show less but clearer information, put actions where the thumb can reach, keep navigation consistent, and make text easy to read. Now [Name 3] will talk about data entry, context and feedback. Thank you.`,
 
-Mistakes will always happen, so a good app helps users recover. A bad message says, "Error 404." A good message says, "We could not find this page. Please check your connection and try again." Use plain language, explain the problem, and offer a solution. Also, let users undo their actions. For example, Gmail shows an Undo button after you send an email.
+3:`Thank you, [Name 2]. Hi everyone, I am [Name 3]. I will talk about data entry and context, then feedback, accessibility and testing.
 
-Next, accessibility. Accessibility means designing for everyone, including people with visual, hearing, motor, or cognitive difficulties. Around one in six people in the world has some kind of disability. We should support screen readers, like VoiceOver and TalkBack, by adding clear labels to buttons and images. We should allow users to increase the text size. And, as we heard earlier, we need good contrast and large touch targets.
+The paper compares several input methods. A soft keyboard on the touch screen is flexible, but it needs your full visual attention. Handwriting feels natural, but recognition makes mistakes. Voice is hands-free and fast, but in 2005 it was not very accurate. It is also a bad choice in noisy places or when privacy matters.
 
-Finally, testing. Designers are not the users. We know our app too well, so we cannot see its problems. That is why we must test with real people. Even five users can find most of the big problems. Then we improve the design and test again. Good design is never finished. It is a cycle.
+The authors see multimodal input as the most promising: voice, touch and keys together. Today you can type a message or just speak it. The lesson is to choose the input method by task, device and environment.
 
-Now let me summarize our presentation. [Name 1] explained that clarity, simplicity, and hierarchy are the foundation. [Name 2] showed that layout, navigation, and readable text must fit the user's thumb and eyes. And in my part, we saw that familiar icons, consistency, good feedback, and accessibility make an app trustworthy.
+The second part is context. Context means the user's situation: where they are, who is nearby, and how noisy or dark it is. Context-aware apps change their behaviour based on this information. The example in the paper is an app that makes the font bigger or the screen brighter in a dark place. Today, automatic brightness and dark mode at night work in a very similar way.
 
-If I had to choose one sentence, it would be this: a great mobile interface is clear, simple, consistent, and kind to the user.
+But if the app changes things by itself, users can feel they have lost control. So the authors say: let users turn these features off, tell them before the interface changes, and do not send messages they did not ask for, like an advertisement every time you walk past a shopping mall.
 
-Thank you very much for your attention. We would be happy to answer your questions.`
+Now, feedback. Imagine you press a button and nothing happens. Is the app working, or is it broken? You press again, and again. Jakob Nielsen calls the solution "visibility of system status". This means the system should always tell users what is going on. Adipat and Zhang add that on a phone, feedback does not have to be visual. It can be a sound, or a vibration, which is very useful in a meeting or when your eyes are busy.
+
+Speed is also part of feedback. Nielsen describes three limits. If the response comes in less than one tenth of a second, it feels instant. Within one second, the user's flow of thought is not broken. After about ten seconds, users start to lose their attention. So, when something takes time, we should show a loading indicator or a progress bar.
+
+And when mistakes happen, the paper says error messages must be clear and meaningful. "Error 404" does not help anyone. "We could not find this page. Please check your connection" is much better.
+
+Next, accessibility. In 2022, the World Health Organization reported that about one point three billion people, around one in six people in the world, live with a significant disability.
+
+Adipat and Zhang give guidelines for different groups of users. For blind users, use audio and vibration, and give a sound confirmation every time the user starts a function. For colour-blind users, do not rely on colour; use bold text, size and strong contrast instead. For deaf users, show information visually and use vibration for alerts. Today, phones have screen readers like VoiceOver on iPhone and TalkBack on Android. So we should add clear labels to every button and image, and let users make the text bigger.
+
+Finally, testing. Designers know their own app too well, so they often cannot see its problems. In 1993, Nielsen and Landauer showed with a mathematical model that a small test with about five users can find most of the usability problems. Figma's guide agrees: watch real people use your design. So, test with a few people, improve it, and test again.
+
+To summarise: [Name 1] introduced the four-part framework and the user. [Name 2] explained information presentation, layout, navigation and readable text. And I covered data entry, context, feedback and accessibility. The basic problem has not changed since 2005: small screens and busy people. If I had to say it in one sentence: a great mobile interface is clear, simple, consistent and friendly to the user. Thank you very much for listening. We are happy to answer your questions.`
 };
 
 const PHRASES = {
@@ -520,7 +548,31 @@ const QA = [
   ['How does consistency help users?','It makes the app predictable. When things look and work in the same way, users learn faster and make fewer mistakes.'],
   ['Can you give an example of a good mobile UI?','For me, the camera app on a phone is a good example. The shutter button is big and easy to reach, and everything else is simple and small. You understand it in one second.'],
   ['What is the biggest challenge in mobile UI design?','The small screen is the biggest challenge. Designers must show only the important things, and they must make them easy to touch. At the same time, the app must still look good.'],
-  ['Could you repeat the last part, please?','Of course. I said that the thumb zone is the area of the screen that your thumb can reach easily. We should put the most important actions there.']
+  ['Could you repeat the last part, please?','Of course. I said that the thumb zone is the area of the screen that your thumb can reach easily. We should put the most important actions there.'],
+  ["Why did you choose a paper from 2005?","Because it gives a clear framework with four parts, and the problems are still the same today: small screens and busy users. We also added newer sources, like WCAG 2.1, Material Design 3 and the WHO report from 2022, to update the numbers."],
+  ["What are the four parts of the framework?","User, context, information presentation and data entry. They are shown in Figure 1 of the paper by Adipat and Zhang."],
+  ["Where does the 44 points come from?","From Apple's Human Interface Guidelines, in the Accessibility section. Forty-four by forty-four points is the default control size for iPhone. The minimum is twenty-eight points."],
+  ["Is five users always enough for testing?","Not always. Nielsen and Landauer's model says a small test finds most problems, but it is an estimate. It works best if you test several times and improve the design between the tests."],
+  ["What is cognitive load?","It is the mental effort a person needs to use something. The paper says a good interface lets users spend their memory on their task, not on the interface."],
+  ["What is a context-aware application?","It is an app that changes its behaviour based on the situation, for example a brighter screen in a dark place. The paper says users must be able to turn this off."],
+  ["What is the difference between UI and UX?","UI is what you see and touch, like buttons and text. UX is the whole experience of using the product. A beautiful UI can still give a bad experience if it is confusing."],
+  ["Which input method is the best?","There is no single best method. The paper says it depends on the task, the device and the environment. That is why multimodal input, using voice and touch together, is so useful."],
+  ["Why did you choose a paper from 2005?","Because it gives a clear framework with four parts, and the problems are still the same today: small screens and busy users. We also added newer sources, like WCAG 2.1, Material Design 3 and the WHO report from 2022, to update the numbers."],
+  ["What are the four parts of the framework?","User, context, information presentation and data entry. They are shown in Figure 1 of the paper by Adipat and Zhang."],
+  ["Where does the 44 points come from?","From Apple's Human Interface Guidelines, in the Accessibility section. Forty-four by forty-four points is the default control size for iPhone. The minimum is twenty-eight points."],
+  ["Is five users always enough for testing?","Not always. Nielsen and Landauer's model says a small test finds most problems, but it is an estimate. It works best if you test several times and improve the design between the tests."],
+  ["What is cognitive load?","It is the mental effort a person needs to use something. The paper says a good interface lets users spend their memory on their task, not on the interface."],
+  ["What is a context-aware application?","It is an app that changes its behaviour based on the situation, for example a brighter screen in a dark place. The paper says users must be able to turn this off."],
+  ["What is the difference between UI and UX?","UI is what you see and touch, like buttons and text. UX is the whole experience of using the product. A beautiful UI can still give a bad experience if it is confusing."],
+  ["Which input method is the best?","There is no single best method. The paper says it depends on the task, the device and the environment. That is why multimodal input, using voice and touch together, is so useful."],
+  ["Why did you choose a paper from 2005?","Because it gives a clear framework with four parts, and the problems are still the same today: small screens and busy users. We also added newer sources, like WCAG 2.1, Material Design 3 and the WHO report from 2022, to update the numbers."],
+  ["What are the four parts of the framework?","User, context, information presentation and data entry. They are shown in Figure 1 of the paper by Adipat and Zhang."],
+  ["Where does the 44 points come from?","From Apple's Human Interface Guidelines, in the Accessibility section. Forty-four by forty-four points is the default control size for iPhone. The minimum is twenty-eight points."],
+  ["Is five users always enough for testing?","Not always. Nielsen and Landauer's model says a small test finds most problems, but it is an estimate. It works best if you test several times and improve the design between the tests."],
+  ["What is cognitive load?","It is the mental effort a person needs to use something. The paper says a good interface lets users spend their memory on their task, not on the interface."],
+  ["What is a context-aware application?","It is an app that changes its behaviour based on the situation, for example a brighter screen in a dark place. The paper says users must be able to turn this off."],
+  ["What is the difference between UI and UX?","UI is what you see and touch, like buttons and text. UX is the whole experience of using the product. A beautiful UI can still give a bad experience if it is confusing."],
+  ["Which input method is the best?","There is no single best method. The paper says it depends on the task, the device and the environment. That is why multimodal input, using voice and touch together, is so useful."]
 ];
 
 const TEMPLATE_WORDS_PER_MIN = 120, TARGET_SEC = 300;
